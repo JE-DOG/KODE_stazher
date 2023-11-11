@@ -1,16 +1,20 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    with(libs.plugins){
+
+        alias(android.application)
+        alias(kotlin.android)
+
+    }
 }
 
 android {
     namespace = "ru.je_dog.kode_stazher"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.je_dog.kode_stazher"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
