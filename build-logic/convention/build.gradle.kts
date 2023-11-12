@@ -25,11 +25,25 @@ gradlePlugin {
             implementationClass = "ComposeConventionPlugin"
         }
 
-        register("je_dogAndroid"){
+        register("je_dogAndroidApplication"){
             id = "je_dog.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
 
+        register("je_dogAndroidNetworkRetrofit"){
+            id = "je_dog.android.network.retrofit"
+            implementationClass = "NetworkRetrofitConventionPlugin"
+        }
+
+        register("je_dogDiKoinCore"){
+            id = "je_dog.di.koin.core"
+            implementationClass = "DiKoinCoreConventionPlugin"
+        }
+
+        register("je_dogDiKoinAndroid"){
+            id = "je_dog.di.koin.android"
+            implementationClass = "AndroidDiKoinConventionPlugin"
+        }
 
     }
 

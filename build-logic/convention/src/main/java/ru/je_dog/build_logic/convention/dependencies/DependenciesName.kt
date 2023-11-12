@@ -7,7 +7,10 @@ object DependenciesName {
     const val androidxCoreKtx = "androidx.core.ktx"
     const val androidxLifecycleRuntimeKtx = "androidx.core.ktx"
 
-    //Compose
+//Compose
+
+    const val compose_navigation = "compose.navigation"
+
     const val composeBom = "compose.bom"
     const val composeUi = "compose.ui"
     const val composeUiGraphics = "compose.ui.graphics"
@@ -20,7 +23,25 @@ object DependenciesName {
     const val composeJunitUiTestManifest = "compose.junit.ui.test.manifest"
     const val extensionAndroidx = "extension.androidx"
 
-    //Tests
+//HTTP
+
+    //Retrofit
+    const val retrofit = "retrfoit"
+    const val retrofit_gson = "retrfoit.gson"
+    //Okhttp
+    const val okhttp_bom = "okhttp.bom"
+    const val okhttp = "okhttp"
+    const val okhttp_interceptor = "okhttp.interceptor"
+
+//DI
+
+    const val koin_bom = "koin.bom"
+    const val koin_core = "koin.core"
+    const val koin_android = "koin.android"
+    const val koin_compose = "koin.compose"
+
+//Tests
+
     //Junit
     const val jUnit = "junit"
     const val jUnitExtensionAndroidx = "junit.extension.androidx"

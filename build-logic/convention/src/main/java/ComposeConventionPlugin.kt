@@ -34,6 +34,8 @@ class ComposeConventionPlugin: Plugin<Project> {
             with(DependenciesName){
                 with(libs) {
 
+                    implementation(findLibrary(compose_navigation))
+
                     implementationPlatform(findLibrary(composeBom))
 
                     implementation(findLibrary(composeUi))
