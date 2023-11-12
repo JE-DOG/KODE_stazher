@@ -30,6 +30,11 @@ gradlePlugin {
             implementationClass = "AndroidApplicationConventionPlugin"
         }
 
+        register("je_dogAndroidLibrary"){
+            id = "je_dog.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+
         register("je_dogAndroidNetworkRetrofit"){
             id = "je_dog.android.network.retrofit"
             implementationClass = "NetworkRetrofitConventionPlugin"
