@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(Projects.Core.core)
+    api( project(Projects.Core.core) )
 }

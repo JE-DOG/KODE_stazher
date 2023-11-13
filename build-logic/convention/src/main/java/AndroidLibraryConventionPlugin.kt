@@ -8,6 +8,8 @@ import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import ru.je_dog.build_logic.convention.core.ext.androidTestImplementation
 import ru.je_dog.build_logic.convention.core.ext.implementation
+import ru.je_dog.build_logic.convention.core.ext.implementationPlatform
+import ru.je_dog.build_logic.convention.core.ext.implementationProject
 import ru.je_dog.build_logic.convention.core.ext.testImplementation
 import ru.je_dog.build_logic.convention.core.ext.versionCatalog
 import ru.je_dog.build_logic.convention.dependencies.DependenciesName
@@ -22,6 +24,7 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
 
             apply("com.android.library")
             apply("org.jetbrains.kotlin.android")
+            apply("je_dog.di.koin.android")
 
         }
 
@@ -56,6 +59,9 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
         }
 
         dependencies {
+
+            implementationProject(":core")
+
             with(libs){
                 with(DependenciesName){
 

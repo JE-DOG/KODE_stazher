@@ -15,6 +15,7 @@ class KotlinLibraryConventionPlugin: Plugin<Project> {
         with(pluginManager){
 
             apply("org.jetbrains.kotlin.jvm")
+            apply("je_dog.di.koin.core")
 
         }
 

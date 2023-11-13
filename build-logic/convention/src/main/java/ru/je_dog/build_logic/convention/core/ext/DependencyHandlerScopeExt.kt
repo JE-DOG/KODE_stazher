@@ -10,7 +10,7 @@ import java.util.Optional
 
 fun DependencyHandlerScope.implementation(library: Optional<Provider<MinimalExternalModuleDependency>>) = add(DependenciesConfiguration.implementation,library.get())
 
-fun DependencyHandlerScope.implementationPlatform(platform: Optional<Provider<MinimalExternalModuleDependency>>) = add(DependenciesConfiguration.debugImplementation,platform(platform.get()))
+fun DependencyHandlerScope.implementationPlatform(platform: Optional<Provider<MinimalExternalModuleDependency>>) = add(DependenciesConfiguration.implementation,platform(platform.get()))
 
 fun DependencyHandlerScope.testImplementation(library: Optional<Provider<MinimalExternalModuleDependency>>) = add(DependenciesConfiguration.testImplementation,library.get())
 
@@ -20,4 +20,4 @@ fun DependencyHandlerScope.androidTestImplementationPlatform(platform: Optional<
 
 fun DependencyHandlerScope.debugImplementation(library: Optional<Provider<MinimalExternalModuleDependency>>) = add(DependenciesConfiguration.debugImplementation,library.get())
 
-fun DependencyHandlerScope.implementationProject(project: String) = add(DependenciesConfiguration.debugImplementation, project(path = project) )
+fun DependencyHandlerScope.implementationProject(project: String) = add(DependenciesConfiguration.implementation, project(path = project) )

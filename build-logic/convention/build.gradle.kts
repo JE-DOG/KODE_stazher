@@ -55,6 +55,21 @@ gradlePlugin {
             implementationClass = "KotlinLibraryConventionPlugin"
         }
 
+        register("je_dogDomain"){
+            id = "je_dog.domain"
+            implementationClass = "DomainConventionPlugin"
+        }
+
+        register("je_dogData"){
+            id = "je_dog.data"
+            implementationClass = "DataConventionPlugin"
+        }
+
+        register("je_dogFeature"){
+            id = "je_dog.feature"
+            implementationClass = "FeatureConventionPlugin"
+        }
+
     }
 
 }

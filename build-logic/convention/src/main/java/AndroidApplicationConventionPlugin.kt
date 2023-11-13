@@ -22,6 +22,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
             apply("com.android.application")
             apply("org.jetbrains.kotlin.android")
+            apply("je_dog.di.koin.android")
 
         }
 
@@ -59,6 +60,9 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
         }
 
         dependencies {
+
+            implementationProject(":core")
+
             with(libs){
                 with(DependenciesName){
 
