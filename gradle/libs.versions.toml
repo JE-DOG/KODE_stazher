@@ -27,6 +27,9 @@
     espresso-core = "3.5.1"
     junit = "4.13.2"
     koin-bom = "3.5.1"
+    coroutines = "1.7.3"
+appcompat = "1.6.1"
+material = "1.10.0"
 
 [libraries]
 
@@ -67,6 +70,10 @@
     koin-android = { module = "io.insert-koin:koin-android" }
     koin-compose = { module = "io.insert-koin:koin-compose" }
 
+#Asynchrony
+
+    kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+
 #Tests
 
     #Junit
@@ -79,6 +86,8 @@
 
     android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
     kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 
@@ -86,7 +95,3 @@
     android-library = { id = "com.android.library", version.ref = "agp" }
     kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
     kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-
-
-
-

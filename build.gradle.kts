@@ -2,10 +2,15 @@
 plugins {
     with(libs.plugins){
 
-        alias(android.application) apply false
-        alias(android.library) apply false
-        alias(kotlin.android) apply false
-        alias(kotlin.jvm) apply false
+        with(android){
+            alias(application) apply false
+            alias(library) apply false
+        }
+
+        with(kotlin){
+            alias(android) apply false
+            alias(jvm) apply false
+        }
 
     }
 }

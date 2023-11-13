@@ -16,3 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "KODE_stazher"
 include(":app")
+include(":core")
+include(":core:domain")
+include(":core:data")
+include(":core:feature")

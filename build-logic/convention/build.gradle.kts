@@ -50,6 +50,11 @@ gradlePlugin {
             implementationClass = "AndroidDiKoinConventionPlugin"
         }
 
+        register("je_dogKotlinLibrary"){
+            id = "je_dog.kotlin.library"
+            implementationClass = "KotlinLibraryConventionPlugin"
+        }
+
     }
 
 }
