@@ -1,5 +1,7 @@
 package ru.je_dog.core.data.model
 
+import ru.je_dog.core.domain.model.UserDomain
+
 /*
 {
     "id": "e0fceffa-cef3-45f7-97c6-6be2e3705927",
@@ -22,4 +24,17 @@ data class UserJson(
     val position: String,
     val birthday: String,
     val phone: String
-)
+){
+
+    fun toDomain() = UserDomain(
+        id = id,
+        firstname = firstname,
+        lastname = lastname,
+        userTag = userTag,
+        department = department,
+        position = position,
+        birthday = birthday,
+        phone = phone
+    )
+
+}

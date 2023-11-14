@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/core/feature" />
             <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/data/users" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/users" />
             <option value="$PROJECT_DIR$/feature" />

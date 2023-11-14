@@ -10,4 +10,12 @@ object Projects {
 
     }
 
+    object Domain {
+
+        private const val start = ":domain"
+
+        const val users = "$start:users"
+
+    }
+
 }

@@ -17,6 +17,8 @@ class FeatureConventionPlugin: Plugin<Project> {
 
             implementationProject(":core")
             implementationProject(":core:feature")
+            implementationProject(":core:data")
+            implementationProject(":core:domain")
 
         }
 

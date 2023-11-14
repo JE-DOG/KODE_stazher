@@ -18,6 +18,7 @@ class DataConventionPlugin: Plugin<Project> {
 
             implementationProject(":core")
             implementationProject(":core:data")
+            implementationProject(":core:domain")
 
         }
 
