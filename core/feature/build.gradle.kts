@@ -9,5 +9,6 @@ android {
 dependencies {
 
     implementation( project(Projects.Core.core) )
+    implementation( project(Projects.Core.domain) )
 
 }
