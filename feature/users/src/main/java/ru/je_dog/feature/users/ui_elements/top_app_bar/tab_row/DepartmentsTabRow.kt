@@ -20,7 +20,7 @@ import ru.je_dog.feature.users.model.DepartmentTab
 @Composable
 fun DepartmentsTabRow(
     onTabClick: (DepartmentTab?) -> Unit,
-    selectedTab: DepartmentTab?
+    selectedTab: String?
 ) {
 
     val departments = stringArrayResource(id = R.array.departments)
@@ -40,12 +40,18 @@ fun DepartmentsTabRow(
         selectedTabIndex = 0,
         indicator = { tabPositions ->
 
-            val index = departments.lastIndexOf(selectedTab)
+            val department = departments.find {
+                selectedTab == it.name
+            }
+            val index = if (department != null)
+                departments.lastIndexOf(department)
+            else
+                null
 
             Box(
                 Modifier
                     .tabIndicatorOffset(
-                        if (index == -1)
+                        if (index == null)
                             tabPositions[0]
                         else
                             tabPositions[index]
@@ -69,7 +75,7 @@ fun DepartmentsTabRow(
         departments.forEach { department ->
 
             Tab(
-                selected = selectedTab == department,
+                selected = selectedTab == department.name,
                 onClick = {
                     onTabClick(department)
                 }

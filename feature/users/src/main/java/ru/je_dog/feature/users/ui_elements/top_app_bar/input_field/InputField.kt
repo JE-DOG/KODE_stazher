@@ -36,12 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.feature.users.vm.action.SortByBirthdayAction
 
 @Composable
 fun InputField(
     onTextChange: (String) -> Unit,
     text: String,
-    onSortClick: () -> Boolean,
+    onSortClick: () -> String,
     onCancelClick: () -> Unit
 ) {
 
@@ -112,7 +113,7 @@ fun InputField(
                         modifier = Modifier
                             .offset(x = 10.dp),
                         onClick = {
-                            hasSorter = onSortClick()
+                            hasSorter = SortByBirthdayAction.SORT_NAME == onSortClick()
                         }
                     ){
                         Icon(
@@ -170,7 +171,7 @@ fun InputFieldPreview() {
         },
         text = text,
         onSortClick = {
-            true
+            SortByBirthdayAction.SORT_NAME
         }
     ) {
         text = ""
