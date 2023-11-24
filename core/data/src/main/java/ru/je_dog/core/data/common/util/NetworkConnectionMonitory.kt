@@ -6,4 +6,6 @@ interface NetworkConnectionMonitory {
 
     val isOnline: Flow<Boolean>
 
+    suspend fun isOnlineNow(): Boolean
+
 }

@@ -4,6 +4,9 @@ infix fun CharSequence.isSubstringFor(charSequence: CharSequence): Boolean {
 
     var currentIndexSubString = 0
 
+    if (this.isEmpty())
+        return true
+
     charSequence.forEachIndexed { index, char ->
 
         val currentCharSubstring = this[currentIndexSubString]

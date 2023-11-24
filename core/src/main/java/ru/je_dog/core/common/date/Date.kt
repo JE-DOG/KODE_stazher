@@ -49,6 +49,24 @@ class Date private constructor(
             day < date.day
     }
 
+    fun monthName(): String = when(month){
+
+        1 -> "январь"
+        2 -> "февраль"
+        3 -> "март"
+        4 -> "апрель"
+        5 -> "май"
+        6 -> "июнь"
+        7 -> "июль"
+        8 -> "август"
+        9 -> "сентябрь"
+        10 -> "октябрь"
+        11-> "ноябрь"
+        12 -> "декабрь"
+
+        else -> throw IllegalArgumentException("Unknown month")
+    }
+
     companion object {
 
         fun create(

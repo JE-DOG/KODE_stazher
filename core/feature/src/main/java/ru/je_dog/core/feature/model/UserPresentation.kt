@@ -1,5 +1,6 @@
 package ru.je_dog.core.feature.model
 
+import ru.je_dog.core.common.date.Date
 import ru.je_dog.core.domain.model.UserDomain
 
 /*
@@ -23,7 +24,7 @@ data class UserPresentation(
     val userTag: String,
     val department: String,
     val position: String,
-    val birthday: String,
+    val birthday: Date,
     val phone: String
 ){
 
@@ -39,7 +40,7 @@ data class UserPresentation(
                 userTag,
                 department,
                 position,
-                birthday,
+                Date.create(birthday),
                 phone
             )
         }

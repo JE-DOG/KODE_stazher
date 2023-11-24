@@ -21,9 +21,9 @@ class NetworkConnectionMonitorImpl(
     private val context: Context
 ): NetworkConnectionMonitory {
 
-    override val isOnline: Flow<Boolean> = callbackFlow<Boolean> {
+    private val networkManager = context.getSystemService<ConnectivityManager>()!!
 
-        val networkManager = context.getSystemService<ConnectivityManager>()!!
+    override val isOnline: Flow<Boolean> = callbackFlow<Boolean> {
 
         val callback = object: NetworkCallback() {
 
@@ -58,6 +58,8 @@ class NetworkConnectionMonitorImpl(
         }
     }
         .conflate()
+
+    override suspend fun isOnlineNow(): Boolean = networkManager.isCurrentlyConnected
 
 }
 

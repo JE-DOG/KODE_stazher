@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="departments">
+        <item>android-Android</item>
+        <item>ios-iOS</item>
+        <item>design-Дизайн</item>
+        <item>management-Менеджмент</item>
+        <item>qa-QA</item>
+        <item>back_office-Бэк-офис</item>
+        <item>frontend-Frontend</item>
+        <item>hr-HR</item>
+        <item>pr-PR</item>
+        <item>backend-Backend</item>
+        <item>support-Техподдержка</item>
+        <item>analytics-Аналитика</item>
+    </string-array>
+
+</resources>

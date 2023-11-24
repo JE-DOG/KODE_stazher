@@ -16,7 +16,7 @@ object DependenciesName {
     const val composeUiGraphics = "compose.ui.graphics"
     const val composeUiToolingPreview = "compose.ui.tooling.preview"
     const val composeMaterial3 = "compose.material3"
-    const val compose_compiler = "compose.compiler"
+    const val composeMaterial = "compose.material"
     //Tests
     const val composeJunitUiTest = "compose.junit.ui.test"
     const val composeJunitUiTooling = "compose.junit.ui.tooling"

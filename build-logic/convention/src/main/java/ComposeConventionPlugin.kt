@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -18,18 +19,6 @@ class ComposeConventionPlugin: Plugin<Project> {
 
         val libs = versionCatalog()
 
-        extensions.configure<ApplicationExtension> {
-
-            buildFeatures {
-                compose = true
-            }
-
-            composeOptions {
-                kotlinCompilerExtensionVersion = libs.findVersion(DependenciesName.compose_compiler).get().toString()
-            }
-
-        }
-
         dependencies {
             with(DependenciesName){
                 with(libs) {
@@ -41,6 +30,7 @@ class ComposeConventionPlugin: Plugin<Project> {
                     implementation(findLibrary(composeUi))
                     implementation(findLibrary(composeUiGraphics))
                     implementation(findLibrary(composeMaterial3))
+                    implementation(findLibrary(composeMaterial))
                     implementation(findLibrary(androidxActivityCompose))
                     implementation(findLibrary(composeUiToolingPreview))
 
