@@ -28,8 +28,9 @@
     junit = "4.13.2"
     koin-bom = "3.5.1"
     coroutines = "1.7.3"
+    pull_to_refresh = "0.2.0"
 appcompat = "1.6.1"
-material = "1.10.0"
+material = "1.8.0"
 
 [libraries]
 
@@ -48,6 +49,8 @@ material = "1.10.0"
     compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
     compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
     compose-material3 = { module = "androidx.compose.material3:material3" }
+    compose-material = { module = "androidx.compose.material:material" }
+
 #Tests
     compose-junit-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
     compose-junit-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -73,6 +76,10 @@ material = "1.10.0"
 #Asynchrony
 
     kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+
+#Other
+
+    other-pull_to_refresh = { module = "com.github.fengdai.compose:pulltorefresh", version.ref = "pull_to_refresh" }
 
 #Tests
 
