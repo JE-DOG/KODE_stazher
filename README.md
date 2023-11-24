@@ -1,7 +1,6 @@
 # KODE_stazher
+
 ## Stack
-
-
 
 ### Architecture
 
@@ -34,11 +33,7 @@
 - Kotlin
 - Coin
 
-
-
 ## Criteries
-
-
 
 - на полноту реализованного функционала и соответствие дизайну
 - количество ошибок
@@ -47,10 +42,7 @@
 - декомпозицию и оценку - то есть на твоё умение разбивать задачи и планировать собственное время
 
 
-
 ## API
-
-
 
 Запрос для получения успешного ответа:
 
@@ -80,13 +72,10 @@ curl --request GET \
 ```
 
 
-
 # Sources
-
-
 
 API - https://kode-education.stoplight.io/docs/trainee-test/b3A6MjUxNDM5Mjg-get-users
 
-Design (Figma) - https://www.figma.com/file/GRRKONipVClULsfdCAuVs1/KODE-Trainee-Dev-%D0%9E%D1%81%D0%B5%D0%BD%D1%8C'21?node-id=11%3A14413
+Design (Figam) - https://www.figma.com/file/GRRKONipVClULsfdCAuVs1/KODE-Trainee-Dev-%D0%9E%D1%81%D0%B5%D0%BD%D1%8C'21?node-id=11%3A14413
 
 Task documentation - https://github.com/appKODE/trainee-test-android

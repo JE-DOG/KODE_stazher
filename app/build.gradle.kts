@@ -17,4 +17,23 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get().toString()
+    }
+}
+
+dependencies {
+
+    implementation( project(Projects.Core.core) )
+    implementation( project(Projects.Core.domain) )
+    implementation( project(Projects.Core.data) )
+
+    implementation( project(Projects.Feature.search_users) )
+    implementation( project(Projects.Feature.user_profile) )
+
 }
