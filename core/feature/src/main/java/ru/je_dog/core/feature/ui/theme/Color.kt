@@ -1,4 +1,4 @@
-package ru.je_dog.kode_stazher.ui.theme
+package ru.je_dog.core.feature.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
