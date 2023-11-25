@@ -31,8 +31,8 @@ import com.github.fengdai.compose.pulltorefresh.PullToRefresh
 import com.github.fengdai.compose.pulltorefresh.rememberPullToRefreshState
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import ru.je_dog.core.feature.ui.elements.error.ErrorScreen
-import ru.je_dog.core.feature.ui.elements.error.FindError
+import ru.je_dog.core.feature.common.ui.elements.error.ErrorScreen
+import ru.je_dog.core.feature.common.ui.elements.error.FindError
 import ru.je_dog.feature.users.ui_elements.top_app_bar.TopAppBar
 import ru.je_dog.feature.users.ui_elements.users_list.UserItem
 import ru.je_dog.feature.users.ui_elements.users_list.YearItem
@@ -43,7 +43,7 @@ import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
 import ru.je_dog.feature.users.vm.action.RefreshAction
 import ru.je_dog.feature.users.vm.action.SortByBirthdayAction
 import ru.je_dog.feature.users.vm.action.TryAgainLoadUsersAction
-import ru.je_dog.core.feature.ui.elements.radio.RadioButton
+import ru.je_dog.core.feature.common.ui.elements.radio.RadioButton
 import ru.je_dog.feature.users.ui_elements.pull_to_refresh.CustomPullToRefreshIndicator
 import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 import ru.je_dog.feature.users.vm.action.SortByNameAction
@@ -132,7 +132,7 @@ internal fun SearchUsersScreen(
                     text = state.searchInputFilter ?: "",
                     onCancelClick = { viewModel.action(FilterByInputSearchAction("")) },
                     onTabClick = {
-                        val action = FilterByDepartmentsAction(it?.tag)
+                        val action = FilterByDepartmentsAction(it)
                         viewModel.action(action)
                     },
                     selectedTab = state.departmentFilter,
@@ -207,7 +207,10 @@ internal fun SearchUsersScreen(
                                         filteredUsersList.take(filteredUsersList.size - currentYearUsers.size)
 
                                     items(currentYearUsers) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }
@@ -221,7 +224,10 @@ internal fun SearchUsersScreen(
                                     }
 
                                     items(nextYearUsers) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }
@@ -230,7 +236,10 @@ internal fun SearchUsersScreen(
                                 } else {
 
                                     items(state.filteredUsersList) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }

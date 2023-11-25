@@ -35,7 +35,7 @@ import ru.je_dog.feature.users.di.searchUsersModule
 import ru.je_dog.feature.users.navigation.searchUsers
 import ru.je_dog.feature.users.navigation.searchUsersRoute
 import ru.je_dog.kode_stazher.di.appModule
-import ru.je_dog.kode_stazher.ui.theme.KODE_stazherTheme
+import ru.je_dog.core.feature.common.ui.theme.KODE_stazherTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -53,26 +53,21 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     KoinApplication(moduleList = {
-
                         listOf(
-                            appModule,
-                            searchUsersModule,
-                            module {
-                                single<Context> { App.INSTANCE }
-                                single<NavController> { navController }
-                            }
+                            appModule(
+                                navController
+                            )
                         )
-
                     }) {
 
                         NavHost(
-                            navController = navController,
+                            navController = koinInject(),
                             startDestination = searchUsersRoute
-                        ){
+                        ) {
 
                             searchUsers()
                             userProfile()
- 
+
                         }
                     }
 

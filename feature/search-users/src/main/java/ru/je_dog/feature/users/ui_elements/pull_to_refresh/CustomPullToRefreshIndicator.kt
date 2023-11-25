@@ -51,6 +51,7 @@ fun CustomPullToRefreshIndicator(
         scaleFraction = 1f
         alphaFraction = 1f
     }
+
     CircularProgressIndicator(
         modifier = Modifier
             .graphicsLayer {
