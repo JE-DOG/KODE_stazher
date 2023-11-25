@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.ui.elements.error
+package ru.je_dog.core.feature.common.ui.elements.error
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

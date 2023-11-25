@@ -35,7 +35,7 @@ import ru.je_dog.feature.users.di.searchUsersModule
 import ru.je_dog.feature.users.navigation.searchUsers
 import ru.je_dog.feature.users.navigation.searchUsersRoute
 import ru.je_dog.kode_stazher.di.appModule
-import ru.je_dog.core.feature.ui.theme.KODE_stazherTheme
+import ru.je_dog.core.feature.common.ui.theme.KODE_stazherTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -56,8 +56,7 @@ class MainActivity : ComponentActivity() {
                         listOf(
                             appModule(
                                 navController
-                            ),
-                            searchUsersModule
+                            )
                         )
                     }) {
 

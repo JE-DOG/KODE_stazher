@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.ui.elements.radio
+package ru.je_dog.core.feature.common.ui.elements.radio
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

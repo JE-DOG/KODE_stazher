@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +32,7 @@ class SearchUsersViewModel(
     private val getUsersUseCases: GetUsersUseCases,
     private val getDynamicUsersUseCase: GetDynamicUsersUseCase,
     private val getUsersWithErrorUseCase: GetUsersWithErrorUseCase,
-    private val navController: NavController
+    private val navController: NavHostController
 ): ViewModel() {
 
     private val _state = MutableStateFlow(SearchUsersViewState())
