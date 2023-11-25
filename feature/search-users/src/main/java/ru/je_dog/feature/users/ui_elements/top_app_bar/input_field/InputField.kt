@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.ui.theme.Black
+import ru.je_dog.core.feature.common.ui.theme.LightGray
+import ru.je_dog.core.feature.common.ui.theme.Typography
 import ru.je_dog.feature.users.vm.action.SortByBirthdayAction
 
 @Composable
@@ -50,6 +54,15 @@ fun InputField(
     var hasFocus by remember {
         mutableStateOf(false)
     }
+
+    val loupeColor = if (hasFocus)
+        Black
+    else
+        LightGray
+    val sortColor = if (hasSorter)
+        MaterialTheme.colorScheme.primary
+    else
+        LightGray
 
     BasicTextField(
         modifier = Modifier
@@ -82,10 +95,7 @@ fun InputField(
                         id = R.drawable.ic_loupe
                     ),
                     contentDescription = null,
-                    tint = if (text.isEmpty() || hasFocus)
-                        Color.Black
-                    else
-                        Color.Gray
+                    tint = loupeColor
                 )
 
                 Box(
@@ -96,7 +106,8 @@ fun InputField(
                     if (!hasFocus){
                         Text(
                             text = stringResource(id = R.string.search_input_hint),
-                            color = Color(0xFFC3C3C6),
+                            color = LightGray,
+                            style = Typography.bodyMedium,
                         )
                     }
                     inputField()
@@ -115,10 +126,7 @@ fun InputField(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_list),
                             contentDescription = null,
-                            tint = if(hasSorter)
-                                Color.Red
-                            else
-                                Color.Gray
+                            tint = sortColor
                         )
                     }
 
@@ -141,7 +149,7 @@ fun InputField(
                 ){
                     Text(
                         text = "Отмена",
-                        color = Color.Red
+                        style = Typography.bodyMedium
                     )
                 }
 

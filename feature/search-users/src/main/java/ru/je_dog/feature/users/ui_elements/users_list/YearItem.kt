@@ -15,11 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ru.je_dog.core.feature.common.ui.theme.LightGray
+import ru.je_dog.core.feature.common.ui.theme.Typography
 
 @Composable
 fun YearItem(
     year: String,
-    color: Color = Color(0xFFC3C3C6)
+    color: Color = LightGray
 ) {
 
     Row(
@@ -33,16 +35,20 @@ fun YearItem(
         Box(
             Modifier
                 .width(72.dp)
-                .height(5.dp)
+                .height(1.dp)
                 .background(color = color)
         )
 
-        Text(text = year, color = color)
+        Text(
+            text = year,
+            color = color,
+            style = Typography.bodyMedium
+        )
 
         Box(
             Modifier
                 .width(72.dp)
-                .height(5.dp)
+                .height(1.dp)
                 .background(color = color)
         )
 

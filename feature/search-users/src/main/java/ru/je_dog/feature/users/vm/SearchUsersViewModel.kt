@@ -3,19 +3,20 @@ package ru.je_dog.feature.users.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.je_dog.core.common.ext.isSubstringFor
+import ru.je_dog.core.data.common.exception.FailedRequestException
 import ru.je_dog.core.feature.common.ext.sortByMonth
-import ru.je_dog.core.feature.common.vm.Action
 import ru.je_dog.core.feature.model.UserPresentation
+import ru.je_dog.feature.users.model.DepartmentTab
 import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 import ru.je_dog.feature.users.vm.action.FilterByDepartmentsAction
 import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
@@ -27,6 +28,7 @@ import ru.je_dog.feature.users.vm.action.TryAgainLoadUsersAction
 import ru.je_dog.users.use_cases.GetDynamicUsersUseCase
 import ru.je_dog.users.use_cases.GetUsersUseCases
 import ru.je_dog.users.use_cases.GetUsersWithErrorUseCase
+import kotlin.random.Random
 
 class SearchUsersViewModel(
     private val getUsersUseCases: GetUsersUseCases,
@@ -69,11 +71,11 @@ class SearchUsersViewModel(
             }
 
             is SortByBirthdayAction -> {
-                sortUser(action.SORT_NAME)
+                sortUsers(action.SORT_NAME)
             }
 
             is SortByNameAction -> {
-                sortUser(action.SORT_NAME)
+                sortUsers(action.SORT_NAME)
             }
 
             is TryAgainLoadUsersAction -> {
@@ -89,7 +91,6 @@ class SearchUsersViewModel(
 
             getUsersUseCases.execute()
                 .onStart {
-                    Log.d("SearchUsersScreenState","Load users start")
                     _state.update {
                         SearchUsersViewState(
                             isLoading = true
@@ -97,7 +98,6 @@ class SearchUsersViewModel(
                     }
                 }
                 .catch {
-                    Log.e("SearchUsersScreenState","${it.message}")
                     _state.update {
                         SearchUsersViewState(
                             isError = true
@@ -105,9 +105,6 @@ class SearchUsersViewModel(
                     }
                 }
                 .collect { usersDomain ->
-
-                    Log.d("SearchUsersScreenState", "$usersDomain")
-
                     val users = usersDomain
                         .map { UserPresentation.fromDomain(it) }
 
@@ -126,26 +123,58 @@ class SearchUsersViewModel(
 
     private fun refreshUsers() = viewModelScope.launch {
 
-        getDynamicUsersUseCase.execute()
-            .onStart {
-                _state.update {
-                    it.copy(
-                        isRefreshing = true
-                    )
+        val random = Random.nextBoolean()
+
+        if (random){
+
+            getDynamicUsersUseCase.execute()
+                .onStart {
+                    _state.update {
+                        it.copy(
+                            isRefreshing = true
+                        )
+                    }
                 }
-            }
-            .collect { usersDomain ->
+                .catch { throwable ->
+                    if (throwable is FailedRequestException){
+                        throwable.printStackTrace()
+                        Log.e("ErrorTag","FailedRequestException\nError code: ${throwable.errorCode}")
+                    }
 
-                val newUsers = usersDomain.map { UserPresentation.fromDomain(it) }
+                    _state.update {
+                        SearchUsersViewState(isError = true)
+                    }
 
-                updateUsers(newUsers)
-
-                _state.update {
-                    it.copy(
-                        isRefreshing = false
-                    )
                 }
-            }
+                .collect { usersDomain ->
+
+                    val newUsers = usersDomain.map { UserPresentation.fromDomain(it) }
+
+                    updateUsers(newUsers)
+
+                    _state.update {
+                        it.copy(
+                            isRefreshing = false
+                        )
+                    }
+                }
+
+        }else {
+
+            getUsersWithErrorUseCase.execute()
+                .catch {  throwable ->
+                    if (throwable is FailedRequestException){
+                        throwable.printStackTrace()
+                        Log.e("ErrorTag","FailedRequestException\nError code: ${throwable.errorCode}")
+                    }
+
+                    _state.update {
+                        SearchUsersViewState(isError = true)
+                    }
+                }
+                .collect()
+
+        }
 
     }
 
@@ -156,129 +185,17 @@ class SearchUsersViewModel(
         val stateValue = state.value
         val updatedUsers = newUsers + stateValue.usersList
 
-        sortUser(updatedUsers)
+        sortUsers(updatedUsers)
 
-    }
-
-    private fun filterUsers(
-        users: List<UserPresentation>
-    ): List<UserPresentation> {
-
-        val stateValue = state.value
-        var filteredList = mutableListOf<UserPresentation>()
-
-        val inputSearch = stateValue.searchInputFilter
-        val department = stateValue.departmentFilter
-
-        if (department == null && inputSearch == null)
-            return users
-
-        for (user in users){
-
-            if (department != null){
-
-                if (department == user.department) {
-
-
-                    if (inputSearch != null) {
-                        if (
-                            inputSearch isSubstringFor user.firstname
-                            ||
-                            inputSearch isSubstringFor user.lastname
-                            ||
-                            inputSearch isSubstringFor user.userTag
-                        ) {
-                            filteredList.add(user)
-                        }
-
-                    } else {
-                        filteredList.add(user)
-                    }
-
-                }
-
-            }else {
-
-                if (inputSearch != null) {
-                    if (
-                        inputSearch isSubstringFor user.firstname
-                        ||
-                        inputSearch isSubstringFor user.lastname
-                        ||
-                        inputSearch isSubstringFor user.userTag
-                    ) {
-                        filteredList.add(user)
-                    }
-
-                }else {
-
-                    filteredList = stateValue.usersList.toMutableList()
-                    break
-
-                }
-
-            }
-
-        }
-
-        return filteredList
     }
 
     private fun setDepartmentFilter(
-        department: String?
+        department: DepartmentTab
     ) {
 
-        val stateValue = state.value
-        val inputSearch = stateValue.searchInputFilter
-        var filteredList = mutableListOf<UserPresentation>()
-
-        for (user in stateValue.usersList){
-
-            if (department != null){
-
-                if (department == user.department) {
-
-
-                    if (inputSearch != null) {
-                        if (
-                            inputSearch isSubstringFor user.firstname
-                            ||
-                            inputSearch isSubstringFor user.lastname
-                            ||
-                            inputSearch isSubstringFor user.userTag
-                        ) {
-                            filteredList.add(user)
-                        }
-
-                    } else {
-                        filteredList.add(user)
-                    }
-
-                }
-
-            }else {
-
-                if (inputSearch != null) {
-                    if (
-                        inputSearch isSubstringFor user.firstname
-                        ||
-                        inputSearch isSubstringFor user.lastname
-                        ||
-                        inputSearch isSubstringFor user.userTag
-                    ) {
-                        filteredList.add(user)
-                    }
-
-                }else {
-
-                    filteredList = stateValue.usersList.toMutableList()
-                    break
-
-                }
-
-            }
-
-        }
+        val filteredList = filterUsers(
+            department = department
+        )
 
         _state.update {
             it.copy(
@@ -292,57 +209,9 @@ class SearchUsersViewModel(
         inputSearch: String?
     ) {
 
-        val stateValue = state.value
-        val department = stateValue.departmentFilter
-        var filteredList = mutableListOf<UserPresentation>()
-
-        for (user in stateValue.usersList){
-
-            if (department != null){
-
-                if (department == user.department) {
-
-
-                    if (inputSearch != null) {
-                        if (
-                            inputSearch isSubstringFor user.firstname
-                            ||
-                            inputSearch isSubstringFor user.lastname
-                            ||
-                            inputSearch isSubstringFor user.userTag
-                        ) {
-                            filteredList.add(user)
-                        }
-
-                    } else {
-                        filteredList.add(user)
-                    }
-
-                }
-
-            }else {
-
-                if (inputSearch != null) {
-                    if (
-                        inputSearch isSubstringFor user.firstname
-                        ||
-                        inputSearch isSubstringFor user.lastname
-                        ||
-                        inputSearch isSubstringFor user.userTag
-                    ) {
-                        filteredList.add(user)
-                    }
-
-                }else {
-
-                    filteredList = stateValue.usersList.toMutableList()
-                    break
-
-                }
-
-            }
-
-        }
+        val filteredList = filterUsers(
+            inputSearch = inputSearch
+        )
 
         _state.update {
             it.copy(
@@ -352,8 +221,6 @@ class SearchUsersViewModel(
         }
     }
 
-
-
     private fun sortedListByAlphabetically(
         list: List<UserPresentation>
     ): List<UserPresentation> = list.sortedWith(
@@ -362,7 +229,7 @@ class SearchUsersViewModel(
         }
     )
 
-    private fun sortUser(
+    private fun sortUsers(
         sortType: String
     ) {
 
@@ -408,7 +275,7 @@ class SearchUsersViewModel(
 
     }
 
-    private fun sortUser(
+    private fun sortUsers(
         users: List<UserPresentation>
     ) {
 
@@ -452,6 +319,67 @@ class SearchUsersViewModel(
 
     }
 
+    private fun filterUsers(
+        users: List<UserPresentation> = state.value.usersList,
+        inputSearch: String? = state.value.searchInputFilter,
+        department: DepartmentTab = state.value.departmentFilter
+    ): List<UserPresentation> {
 
+        val stateValue = state.value
+        var filteredList = mutableListOf<UserPresentation>()
+
+        if (department == DepartmentTab.All && inputSearch == null)
+            return users
+
+        for (user in users){
+
+            if (department != DepartmentTab.All){
+
+                if (department.tag == user.department) {
+
+
+                    if (inputSearch != null) {
+                        if (
+                            inputSearch isSubstringFor user.firstname
+                            ||
+                            inputSearch isSubstringFor user.lastname
+                            ||
+                            inputSearch isSubstringFor user.userTag
+                        ) {
+                            filteredList.add(user)
+                        }
+
+                    } else {
+                        filteredList.add(user)
+                    }
+
+                }
+
+            }else {
+
+                if (inputSearch != null) {
+                    if (
+                        inputSearch isSubstringFor user.firstname
+                        ||
+                        inputSearch isSubstringFor user.lastname
+                        ||
+                        inputSearch isSubstringFor user.userTag
+                    ) {
+                        filteredList.add(user)
+                    }
+
+                }else {
+
+                    filteredList = stateValue.usersList.toMutableList()
+                    break
+
+                }
+
+            }
+
+        }
+
+        return filteredList
+    }
 
 }

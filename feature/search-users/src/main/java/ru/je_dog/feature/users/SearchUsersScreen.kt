@@ -132,7 +132,7 @@ internal fun SearchUsersScreen(
                     text = state.searchInputFilter ?: "",
                     onCancelClick = { viewModel.action(FilterByInputSearchAction("")) },
                     onTabClick = {
-                        val action = FilterByDepartmentsAction(it?.tag)
+                        val action = FilterByDepartmentsAction(it)
                         viewModel.action(action)
                     },
                     selectedTab = state.departmentFilter,
@@ -207,7 +207,10 @@ internal fun SearchUsersScreen(
                                         filteredUsersList.take(filteredUsersList.size - currentYearUsers.size)
 
                                     items(currentYearUsers) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }
@@ -221,7 +224,10 @@ internal fun SearchUsersScreen(
                                     }
 
                                     items(nextYearUsers) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }
@@ -230,7 +236,10 @@ internal fun SearchUsersScreen(
                                 } else {
 
                                     items(state.filteredUsersList) {
-                                        UserItem(user = it){
+                                        UserItem(
+                                            user = it,
+                                            isSortByBirthday = state.sortType == SortByBirthdayAction.SORT_NAME
+                                        ){
                                             val action = ClickOnUserItemAction(it)
                                             viewModel.action(action)
                                         }

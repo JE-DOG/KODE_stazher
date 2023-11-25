@@ -24,6 +24,7 @@ val Typography = Typography(
     bodySmall = TextStyle(
         fontSize = 13.sp,
         lineHeight = 16.sp,
-        fontWeight = FontWeight.Normal
+        fontWeight = FontWeight.Normal,
+        color = LightGray
     )
 )

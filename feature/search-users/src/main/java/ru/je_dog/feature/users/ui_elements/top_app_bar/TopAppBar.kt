@@ -20,8 +20,8 @@ fun TopAppBar(
     text: String,
     onCancelClick: () -> Unit,
     hasSorter: Boolean,
-    onTabClick: (DepartmentTab?) -> Unit,
-    selectedTab: String?
+    onTabClick: (DepartmentTab) -> Unit,
+    selectedTab: DepartmentTab
 ) {
 
     Column(

@@ -1,6 +1,6 @@
 package ru.je_dog.feature.users.ui_elements.users_list
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,15 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.ui.theme.Gray
+import ru.je_dog.core.feature.common.ui.theme.Typography
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 
 @Composable
 fun UserItem(
     user: UserPresentation,
-    onClick: (UserPresentation) -> Unit,
+    isSortByBirthday: Boolean,
+    onClick: (UserPresentation) -> Unit
 ) {
 
     Row(
@@ -57,18 +60,44 @@ fun UserItem(
 
             Row(
                 Modifier
-                    .wrapContentWidth()
+                    .wrapContentWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "${user.firstname} ${user.lastname}")
+                Text(
+                    text = "${user.firstname} ${user.lastname}",
+                    style = Typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                Text(text = user.userTag.lowercase())
+                Text(
+                    text = user.userTag.lowercase(),
+                    style = Typography.bodySmall
+                )
+
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(3.dp))
 
-            Text(text = user.department)
+            Text(
+                text = user.department,
+                color = Gray,
+                style = Typography.bodySmall
+            )
+
+        }
+
+        if (isSortByBirthday){
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            val userBirthMonth = user.birthday.monthName().take(3)
+            Text(
+                text = "${user.birthday.day} $userBirthMonth",
+                color = Gray,
+                style = Typography.bodySmall
+            )
 
         }
 
