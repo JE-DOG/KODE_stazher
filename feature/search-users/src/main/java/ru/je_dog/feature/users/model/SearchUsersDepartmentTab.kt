@@ -1,6 +1,6 @@
 package ru.je_dog.feature.users.model
 
-enum class DepartmentTab(
+enum class SearchUsersDepartmentTab(
     val text: String,
     val tag: String?
 ){

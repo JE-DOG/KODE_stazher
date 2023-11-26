@@ -14,9 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.ui.theme.LightGray
+import ru.je_dog.core.feature.common.ui.theme.Typography
 
 @Composable
 fun ErrorScreen(
@@ -38,13 +41,21 @@ fun ErrorScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
         
-        Text(text = "Какой-то сверхразум все сломал")
+        Text(
+            text = "Какой-то сверхразум все сломал",
+            style = Typography.bodyMedium,
+            fontWeight = FontWeight.Bold
+        )
         
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         
-        Text(text = "Постараемся быстро починить")
+        Text(
+            text = "Постараемся быстро починить",
+            style = Typography.bodyMedium,
+            color = LightGray
+        )
         
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         
         TextButton(onClick = onRepeatClick ) {
             Text(text = "Попробовать снова")

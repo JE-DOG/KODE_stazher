@@ -16,15 +16,15 @@ import ru.je_dog.core.common.ext.isSubstringFor
 import ru.je_dog.core.data.common.exception.FailedRequestException
 import ru.je_dog.core.feature.common.ext.sortByMonth
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.model.DepartmentTab
+import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
+import ru.je_dog.feature.users.model.SearchUsersSortType
 import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 import ru.je_dog.feature.users.vm.action.FilterByDepartmentsAction
 import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
 import ru.je_dog.feature.users.vm.action.RefreshAction
 import ru.je_dog.feature.users.vm.action.SearchUsersAction
-import ru.je_dog.feature.users.vm.action.SortByBirthdayAction
-import ru.je_dog.feature.users.vm.action.SortByNameAction
-import ru.je_dog.feature.users.vm.action.TryAgainLoadUsersAction
+import ru.je_dog.feature.users.vm.action.SortByAction
+import ru.je_dog.feature.users.vm.action.LoadUsersAction
 import ru.je_dog.users.use_cases.GetDynamicUsersUseCase
 import ru.je_dog.users.use_cases.GetUsersUseCases
 import ru.je_dog.users.use_cases.GetUsersWithErrorUseCase
@@ -70,15 +70,11 @@ class SearchUsersViewModel(
                 refreshUsers()
             }
 
-            is SortByBirthdayAction -> {
-                sortUsers(action.SORT_NAME)
+            is SortByAction -> {
+                sortUsers(action.sortType)
             }
 
-            is SortByNameAction -> {
-                sortUsers(action.SORT_NAME)
-            }
-
-            is TryAgainLoadUsersAction -> {
+            is LoadUsersAction -> {
                 loadUsers()
             }
 
@@ -190,7 +186,7 @@ class SearchUsersViewModel(
     }
 
     private fun setDepartmentFilter(
-        department: DepartmentTab
+        department: SearchUsersDepartmentTab
     ) {
 
         val filteredList = filterUsers(
@@ -230,14 +226,14 @@ class SearchUsersViewModel(
     )
 
     private fun sortUsers(
-        sortType: String
+        sortType: SearchUsersSortType
     ) {
 
         val users = state.value.usersList
 
         when(sortType){
 
-            SortByNameAction.SORT_NAME -> {
+            SearchUsersSortType.Alphabet -> {
 
                 val sortedUsers = sortedListByAlphabetically(
                     users
@@ -256,7 +252,7 @@ class SearchUsersViewModel(
 
             }
 
-            SortByBirthdayAction.SORT_NAME -> {
+            SearchUsersSortType.Birthday -> {
 
                 val sortedUsers = users.sortByMonth()
                 val filteredUsers = filterUsers(sortedUsers)
@@ -283,7 +279,7 @@ class SearchUsersViewModel(
 
         when(sortType){
 
-            SortByNameAction.SORT_NAME -> {
+            SearchUsersSortType.Alphabet -> {
 
                 val sortedUsers = sortedListByAlphabetically(
                     users
@@ -301,7 +297,7 @@ class SearchUsersViewModel(
 
             }
 
-            SortByBirthdayAction.SORT_NAME -> {
+            SearchUsersSortType.Birthday -> {
 
                 val sortedUsers = users.sortByMonth()
                 val filteredUsers = filterUsers(sortedUsers)
@@ -322,18 +318,18 @@ class SearchUsersViewModel(
     private fun filterUsers(
         users: List<UserPresentation> = state.value.usersList,
         inputSearch: String? = state.value.searchInputFilter,
-        department: DepartmentTab = state.value.departmentFilter
+        department: SearchUsersDepartmentTab = state.value.departmentFilter
     ): List<UserPresentation> {
 
         val stateValue = state.value
         var filteredList = mutableListOf<UserPresentation>()
 
-        if (department == DepartmentTab.All && inputSearch == null)
+        if (department == SearchUsersDepartmentTab.All && inputSearch == null)
             return users
 
         for (user in users){
 
-            if (department != DepartmentTab.All){
+            if (department != SearchUsersDepartmentTab.All){
 
                 if (department.tag == user.department) {
 

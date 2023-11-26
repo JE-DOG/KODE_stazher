@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
@@ -20,15 +19,15 @@ import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.common.ui.theme.Black
 import ru.je_dog.core.feature.common.ui.theme.LightGray
 import ru.je_dog.core.feature.common.ui.theme.Typography
-import ru.je_dog.feature.users.model.DepartmentTab
+import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
 
 @Composable
 fun DepartmentsTabRow(
-    onTabClick: (DepartmentTab) -> Unit,
-    selectedTab: DepartmentTab
+    onTabClick: (SearchUsersDepartmentTab) -> Unit,
+    selectedTab: SearchUsersDepartmentTab
 ) {
 
-    val departments = DepartmentTab.values()
+    val departments = SearchUsersDepartmentTab.values()
 
     val selectedTabIndex = selectedTab.ordinal
 
@@ -39,6 +38,7 @@ fun DepartmentsTabRow(
         edgePadding = 0.dp,
         selectedTabIndex = selectedTabIndex,
         contentColor = Black,
+        divider = {},
         indicator = { tabPositions ->
 
             Box(
@@ -69,8 +69,8 @@ fun DepartmentsTabRow(
 @Composable
 fun DepartmentTab(
     isSelected: Boolean,
-    onClick: (DepartmentTab) -> Unit,
-    department: DepartmentTab
+    onClick: (SearchUsersDepartmentTab) -> Unit,
+    department: SearchUsersDepartmentTab
 ) {
 
     Tab(
@@ -89,7 +89,7 @@ fun DepartmentTab(
             FontWeight.Normal
 
         Text(
-            modifier = Modifier.padding(bottom = 6.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
             text = department.text,
             style = Typography.bodyMedium,
             fontWeight = fontWeight
