@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import ru.je_dog.core.feature.common.ui.theme.LightGray
+import ru.je_dog.core.feature.common.ui.theme.Typography
 import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.user_profile.R
 
@@ -54,16 +56,28 @@ fun UserProfileHeader(
 
         Spacer(modifier = Modifier.height(24.dp))
         
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
-            Text(text = "${user.firstname} ${user.lastname}")
-            Text(text = " ${user.userTag}")
+            Text(
+                text = "${user.firstname} ${user.lastname}",
+                style = Typography.bodyLarge
+            )
+            Text(
+                text = " ${user.userTag.lowercase()}",
+                style = Typography.bodyMedium,
+                color = LightGray
+            )
 
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = user.department)
+        Text(
+            text = user.department,
+            style = Typography.bodySmall
+        )
 
 
     }

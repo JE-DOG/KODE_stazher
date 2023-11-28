@@ -39,6 +39,7 @@ object DependenciesName {
     const val koin_core = "koin.core"
     const val koin_android = "koin.android"
     const val koin_compose = "koin.compose"
+    const val koin_compose_androidx = "koin.compose.androidx"
 
 //Tests
 

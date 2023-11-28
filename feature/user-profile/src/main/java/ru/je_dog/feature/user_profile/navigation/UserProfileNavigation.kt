@@ -1,5 +1,6 @@
 package ru.je_dog.feature.user_profile.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -8,7 +9,9 @@ import com.google.gson.Gson
 import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.user_profile.UserProfile
 
-fun NavGraphBuilder.userProfile(){
+fun NavGraphBuilder.userProfile(
+    navigateToBack: () -> Unit
+){
 
     composable(
         "$userProfileRoute/{user}",
@@ -22,9 +25,21 @@ fun NavGraphBuilder.userProfile(){
         val userJson = it.arguments?.getString("user")
         val user = Gson().fromJson(userJson,UserPresentation::class.java)
 
-        UserProfile(user = user)
+        UserProfile(
+            user = user,
+            navigateToBack = navigateToBack
+        )
 
     }
+
+}
+
+fun NavController.navigateToUserProfile(
+    userPresentation: UserPresentation
+){
+
+    val userJson = Gson().toJson(userPresentation)
+    navigate("userProfileRoute/$userJson")
 
 }
 

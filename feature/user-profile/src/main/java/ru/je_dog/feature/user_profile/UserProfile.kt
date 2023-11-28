@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import org.koin.compose.koinInject
+import ru.je_dog.core.feature.common.ui.theme.DarkWhite
 import ru.je_dog.core.feature.common.ui.theme.LightGray
 import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.user_profile.ui_elements.UserDataList
@@ -19,7 +20,7 @@ import ru.je_dog.feature.user_profile.ui_elements.UserProfileHeader
 @Composable
 internal fun UserProfile(
     user: UserPresentation,
-    navController: NavHostController = koinInject()
+    navigateToBack: () -> Unit
 ) {
 
     Column(
@@ -28,11 +29,9 @@ internal fun UserProfile(
         
         UserProfileHeader(
             modifier = Modifier
-                .background(LightGray),
+                .background(DarkWhite),
             user = user,
-            onBackClick = {
-                navController.popBackStack()
-            }
+            onBackClick = navigateToBack
         )
         
         UserDataList(

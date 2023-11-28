@@ -36,14 +36,14 @@ import ru.je_dog.feature.users.navigation.searchUsers
 import ru.je_dog.feature.users.navigation.searchUsersRoute
 import ru.je_dog.kode_stazher.di.appModule
 import ru.je_dog.core.feature.common.ui.theme.KODE_stazherTheme
+import ru.je_dog.feature.user_profile.navigation.navigateToUserProfile
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-            val navController = rememberNavController()
+            val navHosController = rememberNavController()
 
             KODE_stazherTheme {
                 // A surface container using the 'background' color from the theme
@@ -51,25 +51,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    KoinApplication(moduleList = {
-                        listOf(
-                            appModule(
-                                navController
-                            )
-                        )
-                    }) {
-
                         NavHost(
-                            navController = koinInject(),
+                            navController = navHosController,
                             startDestination = searchUsersRoute
                         ) {
 
-                            searchUsers()
-                            userProfile()
+                            searchUsers(
+                                navigateToUserProfile = navHosController::navigateToUserProfile
+                            )
+                            userProfile(
+                                navigateToBack = navHosController::popBackStack
+                            )
 
                         }
-                    }
 
                 }
             }

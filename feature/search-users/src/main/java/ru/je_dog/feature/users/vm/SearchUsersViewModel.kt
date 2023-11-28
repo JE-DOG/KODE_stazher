@@ -3,8 +3,6 @@ package ru.je_dog.feature.users.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,7 +16,6 @@ import ru.je_dog.core.feature.common.ext.sortByMonth
 import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
 import ru.je_dog.feature.users.model.SearchUsersSortType
-import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 import ru.je_dog.feature.users.vm.action.FilterByDepartmentsAction
 import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
 import ru.je_dog.feature.users.vm.action.RefreshAction
@@ -33,8 +30,7 @@ import kotlin.random.Random
 class SearchUsersViewModel(
     private val getUsersUseCases: GetUsersUseCases,
     private val getDynamicUsersUseCase: GetDynamicUsersUseCase,
-    private val getUsersWithErrorUseCase: GetUsersWithErrorUseCase,
-    private val navController: NavHostController
+    private val getUsersWithErrorUseCase: GetUsersWithErrorUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(SearchUsersViewState())
@@ -48,11 +44,6 @@ class SearchUsersViewModel(
 
     fun action(action: SearchUsersAction) {
         when (action) {
-
-            is ClickOnUserItemAction -> {
-                val userJson = Gson().toJson(action.user)
-                navController.navigate("userProfileRoute/$userJson")
-            }
 
             is FilterByDepartmentsAction -> {
                 setDepartmentFilter(

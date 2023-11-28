@@ -1,7 +1,6 @@
 package ru.je_dog.feature.users
 
 import android.icu.util.Calendar
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.github.fengdai.compose.pulltorefresh.PullToRefresh
 import com.github.fengdai.compose.pulltorefresh.rememberPullToRefreshState
 import kotlinx.coroutines.launch
-import org.koin.compose.getKoin
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
 import ru.je_dog.core.feature.common.ui.elements.error.ErrorScreen
 import ru.je_dog.core.feature.common.ui.elements.error.FindError
+import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.users.ui_elements.top_app_bar.TopAppBar
 import ru.je_dog.feature.users.ui_elements.users_list.UserItem
 import ru.je_dog.feature.users.ui_elements.users_list.YearItem
@@ -38,13 +37,13 @@ import ru.je_dog.feature.users.vm.action.LoadUsersAction
 import ru.je_dog.feature.users.model.SearchUsersSortType
 import ru.je_dog.feature.users.ui_elements.bottom_sheet.SearchUsersSort
 import ru.je_dog.feature.users.ui_elements.pull_to_refresh.CustomPullToRefreshIndicator
-import ru.je_dog.feature.users.vm.action.ClickOnUserItemAction
 import ru.je_dog.feature.users.vm.action.SortByAction
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun SearchUsersScreen(
-    viewModel: SearchUsersViewModel = koinInject(),
+    navigateToUserProfile: (UserPresentation) -> Unit,
+    viewModel: SearchUsersViewModel = koinViewModel()
 ) {
 
     val state = viewModel.state.collectAsState().value
@@ -150,11 +149,9 @@ internal fun SearchUsersScreen(
                                         items(currentYearUsers) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday
-                                            ) {
-                                                val action = ClickOnUserItemAction(it)
-                                                viewModel.action(action)
-                                            }
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                onClick = navigateToUserProfile
+                                            )
                                         }
 
                                         item {
@@ -166,11 +163,9 @@ internal fun SearchUsersScreen(
                                         items(nextYearUsers) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday
-                                            ) {
-                                                val action = ClickOnUserItemAction(it)
-                                                viewModel.action(action)
-                                            }
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                onClick = navigateToUserProfile
+                                            )
                                         }
 
                                     }
@@ -180,11 +175,9 @@ internal fun SearchUsersScreen(
                                         items(state.filteredUsersList) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday
-                                            ) {
-                                                val action = ClickOnUserItemAction(it)
-                                                viewModel.action(action)
-                                            }
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                onClick = navigateToUserProfile
+                                            )
                                         }
 
                                     }

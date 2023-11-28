@@ -7,12 +7,9 @@ import org.koin.dsl.module
 import ru.je_dog.feature.users.di.searchUsersModule
 import ru.je_dog.kode_stazher.App
 
-fun appModule(
-    navController: NavHostController
-) = module {
+val appModule = module {
 
     single<Context> { App.INSTANCE }
-    single<NavHostController> { navController }
 
     includes(
         networkModule
