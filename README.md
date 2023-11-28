@@ -25,7 +25,7 @@
 
 ### DI
 
-- Dagger
+- Koin
 
 ### Other
 
