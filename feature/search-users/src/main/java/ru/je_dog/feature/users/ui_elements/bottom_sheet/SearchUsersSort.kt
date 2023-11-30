@@ -16,14 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ru.je_dog.core.feature.common.list.sort.ListSorterItem
 import ru.je_dog.core.feature.common.ui.elements.radio.RadioButtonWithText
 import ru.je_dog.core.feature.common.ui.theme.BottomSheetShape
 import ru.je_dog.core.feature.common.ui.theme.Typography
+import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.users.model.SearchUsersSortType
 
 @Composable
 fun SearchUsersSort(
-    currentSortType: SearchUsersSortType,
+    currentSortType: ListSorterItem<UserPresentation>,
     onSortTypeClick: (SearchUsersSortType) -> Unit
 ) {
 
@@ -65,7 +67,7 @@ fun SearchUsersSort(
 
             RadioButtonWithText(
                 text = sortType.text,
-                selected = currentSortType == sortType,
+                selected = currentSortType == sortType.sorterItem,
                 onClick = {
                     onSortTypeClick(sortType)
                 }

@@ -1,4 +1,4 @@
-package ru.je_dog.feature.users.filter.facade
+package ru.je_dog.feature.users.list.filter.facade
 
 import kotlinx.coroutines.flow.StateFlow
 import ru.je_dog.core.feature.model.UserPresentation

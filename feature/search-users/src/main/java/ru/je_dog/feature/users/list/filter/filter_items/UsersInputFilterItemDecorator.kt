@@ -1,4 +1,4 @@
-package ru.je_dog.feature.users.filter.filter_items
+package ru.je_dog.feature.users.list.filter.filter_items
 
 import android.util.Log
 import ru.je_dog.core.common.ext.isSubstringFor

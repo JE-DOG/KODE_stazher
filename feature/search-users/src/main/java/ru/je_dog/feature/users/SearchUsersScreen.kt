@@ -1,6 +1,7 @@
 package ru.je_dog.feature.users
 
 import android.icu.util.Calendar
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.je_dog.core.feature.common.ui.elements.error.ErrorScreen
 import ru.je_dog.core.feature.common.ui.elements.error.FindError
 import ru.je_dog.core.feature.model.UserPresentation
+import ru.je_dog.feature.users.list.sort.sort_items.AlphabeticallySortItem
+import ru.je_dog.feature.users.list.sort.sort_items.BirthdaySortItem
 import ru.je_dog.feature.users.ui_elements.top_app_bar.TopAppBar
 import ru.je_dog.feature.users.ui_elements.users_list.UserItem
 import ru.je_dog.feature.users.ui_elements.users_list.YearItem
@@ -53,6 +56,7 @@ internal fun SearchUsersScreen(
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -89,14 +93,14 @@ internal fun SearchUsersScreen(
                         val action = FilterByInputSearchAction(it)
                         viewModel.action(action)
                     },
-                    text = state.searchInputFilter ?: "",
+                    text = state.searchInputFilter,
                     onCancelClick = { viewModel.action(FilterByInputSearchAction("")) },
                     onTabClick = {
                         val action = FilterByDepartmentsAction(it)
                         viewModel.action(action)
                     },
                     selectedTab = state.departmentFilter,
-                    hasSorter = state.sortType != SearchUsersSortType.Alphabet
+                    hasSorter = state.sortType != SearchUsersSortType.Alphabet.sorterItem
                 )
 
             }
@@ -127,7 +131,7 @@ internal fun SearchUsersScreen(
 
                                 when (state.sortType) {
 
-                                    SearchUsersSortType.Birthday -> {
+                                    is BirthdaySortItem -> {
 
                                         val calendar = Calendar.getInstance()
 
@@ -140,7 +144,7 @@ internal fun SearchUsersScreen(
                                         val currentYearUsers = filteredUsersList.dropWhile {
                                             it.birthday.month < currentMonth
                                                     ||
-                                                    it.birthday.month == currentMonth && it.birthday.day <= currentDayOfMonth
+                                            it.birthday.month == currentMonth && it.birthday.day <= currentDayOfMonth
                                         }
 
                                         val nextYearUsers =
@@ -149,7 +153,7 @@ internal fun SearchUsersScreen(
                                         items(currentYearUsers) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
@@ -163,19 +167,21 @@ internal fun SearchUsersScreen(
                                         items(nextYearUsers) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
 
                                     }
 
-                                    SearchUsersSortType.Alphabet -> {
+                                    is AlphabeticallySortItem -> {
 
                                         items(state.filteredUsersList) {
+                                            Log.d("SearchUsersScreenStateTagSorter",it.toString())
+
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday,
+                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }

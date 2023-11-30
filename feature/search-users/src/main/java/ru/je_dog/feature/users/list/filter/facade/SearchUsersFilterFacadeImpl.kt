@@ -1,4 +1,4 @@
-package ru.je_dog.feature.users.filter.facade
+package ru.je_dog.feature.users.list.filter.facade
 
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.je_dog.core.feature.common.list.filter.ListFilterItem
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.filter.SearchUsersFilter
-import ru.je_dog.feature.users.filter.filter_items.UsersDepartmentFilterItemDecorator
-import ru.je_dog.feature.users.filter.filter_items.UsersInputFilterItemDecorator
+import ru.je_dog.feature.users.list.filter.SearchUsersFilter
+import ru.je_dog.feature.users.list.filter.filter_items.UsersDepartmentFilterItemDecorator
+import ru.je_dog.feature.users.list.filter.filter_items.UsersInputFilterItemDecorator
 import ru.je_dog.feature.users.model.UsersDepartmentTab
 
 class  SearchUsersFilterFacadeImpl: SearchUserFilterFacade {

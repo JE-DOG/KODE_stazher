@@ -1,4 +1,4 @@
-package ru.je_dog.feature.users.filter
+package ru.je_dog.feature.users.list.filter
 
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
