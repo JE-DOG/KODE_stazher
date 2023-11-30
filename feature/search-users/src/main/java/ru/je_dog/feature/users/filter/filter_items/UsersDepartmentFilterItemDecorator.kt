@@ -6,19 +6,19 @@ import ru.je_dog.core.feature.model.UserPresentation
 import ru.je_dog.feature.users.model.UsersDepartmentTab
 
 class UsersDepartmentFilterItemDecorator(
-    private val filterItem: ListFilterItem<*, UserPresentation>? = null,
-    override var filterValue: UsersDepartmentTab? = null
+    private val filterItem: ListFilterItem<*, UserPresentation>,
+    override var filterValue: UsersDepartmentTab? = UsersDepartmentTab.All
 ): ListFilterItem<UsersDepartmentTab, UserPresentation> {
 
     override fun execute(item: UserPresentation): Boolean {
-        return if (filterValue != null){
+        return if (filterValue != UsersDepartmentTab.All){
 
+            if (filterValue!!.tag == item.department) {
 
-            if (filterValue!!.tag == item.userTag) {
-
-                filterItem?.execute(item) ?: true
+                filterItem.execute(item)
 
             }else{
+
                 false
             }
 

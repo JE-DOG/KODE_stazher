@@ -11,47 +11,45 @@ import ru.je_dog.feature.users.filter.filter_items.UsersDepartmentFilterItemDeco
 import ru.je_dog.feature.users.filter.filter_items.UsersInputFilterItemDecorator
 import ru.je_dog.feature.users.model.UsersDepartmentTab
 
-class SearchUsersFilterFacadeImpl: SearchUserFilterFacade {
+class  SearchUsersFilterFacadeImpl: SearchUserFilterFacade {
 
-    private val departmentTabFilterItem = UsersDepartmentFilterItemDecorator()
-    private val inputSearchFilterItem = UsersInputFilterItemDecorator(departmentTabFilterItem)
-    private val filterItem = inputSearchFilterItem
+    private val inputSearchFilterItem = UsersInputFilterItemDecorator()
+    private val departmentTabFilterItem = UsersDepartmentFilterItemDecorator(inputSearchFilterItem)
+    private val filterItem = departmentTabFilterItem
     private val searchUsersFilter = SearchUsersFilter(filterItem)
 
     //states
     override val filteredUsers = searchUsersFilter.filteredList
     private val _departmentTabFilter = MutableStateFlow(UsersDepartmentTab.All)
-    val departmentTabFilter: StateFlow<UsersDepartmentTab> = _departmentTabFilter
     private val _inputSearchFilter = MutableStateFlow("")
-    val inputSearchFilter: StateFlow<String> = _inputSearchFilter
+    override val departmentTabFilter: StateFlow<UsersDepartmentTab> = _departmentTabFilter
+    override val inputSearchFilter: StateFlow<String> = _inputSearchFilter
 
-    override fun updateDepartment(departmentTab: UsersDepartmentTab) {
+    override fun updateDepartment(
+        departmentTab: UsersDepartmentTab,
+        list: List<UserPresentation>
+    ) {
         departmentTabFilterItem.updateFilterValue(departmentTab)
 
         _departmentTabFilter.update {
             departmentTab
         }
 
-        refreshList()
+        searchUsersFilter.setList(list)
     }
 
-    override fun updateInputSearch(inputSearch: String) {
+    override fun updateInputSearch(inputSearch: String,list: List<UserPresentation>) {
         inputSearchFilterItem.updateFilterValue(inputSearch)
 
         _inputSearchFilter.update {
             inputSearch
         }
 
-        refreshList()
+        searchUsersFilter.setList(list)
     }
 
     override fun setList(newList: List<UserPresentation>) {
         searchUsersFilter.setList(newList)
-    }
-
-    private fun refreshList(){
-        Log.d("FilterTag","Refresh list")
-        searchUsersFilter.setList(filteredUsers.value)
     }
 
 }

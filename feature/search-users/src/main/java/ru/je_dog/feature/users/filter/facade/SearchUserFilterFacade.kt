@@ -7,10 +7,12 @@ import ru.je_dog.feature.users.model.UsersDepartmentTab
 interface SearchUserFilterFacade {
 
     val filteredUsers: StateFlow<List<UserPresentation>>
+    val inputSearchFilter: StateFlow<String>
+    val departmentTabFilter: StateFlow<UsersDepartmentTab>
 
-    fun updateDepartment(departmentTab: UsersDepartmentTab)
+    fun updateDepartment(departmentTab: UsersDepartmentTab,list: List<UserPresentation>)
 
-    fun updateInputSearch(inputSearch: String)
+    fun updateInputSearch(inputSearch: String,list: List<UserPresentation>)
 
     fun setList(newList: List<UserPresentation>)
 

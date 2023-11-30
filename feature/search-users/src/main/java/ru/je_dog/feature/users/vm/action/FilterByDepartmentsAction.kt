@@ -1,7 +1,7 @@
 package ru.je_dog.feature.users.vm.action
 
-import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
+import ru.je_dog.feature.users.model.UsersDepartmentTab
 
 data class FilterByDepartmentsAction(
-    val department: SearchUsersDepartmentTab
+    val department: UsersDepartmentTab
 ): SearchUsersAction

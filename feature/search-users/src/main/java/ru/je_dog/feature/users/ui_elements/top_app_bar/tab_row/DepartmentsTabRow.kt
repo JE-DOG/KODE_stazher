@@ -19,15 +19,15 @@ import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.common.ui.theme.Black
 import ru.je_dog.core.feature.common.ui.theme.LightGray
 import ru.je_dog.core.feature.common.ui.theme.Typography
-import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
+import ru.je_dog.feature.users.model.UsersDepartmentTab
 
 @Composable
 fun DepartmentsTabRow(
-    onTabClick: (SearchUsersDepartmentTab) -> Unit,
-    selectedTab: SearchUsersDepartmentTab
+    onTabClick: (UsersDepartmentTab) -> Unit,
+    selectedTab: UsersDepartmentTab
 ) {
 
-    val departments = SearchUsersDepartmentTab.values()
+    val departments = UsersDepartmentTab.values()
 
     val selectedTabIndex = selectedTab.ordinal
 
@@ -69,8 +69,8 @@ fun DepartmentsTabRow(
 @Composable
 fun DepartmentTab(
     isSelected: Boolean,
-    onClick: (SearchUsersDepartmentTab) -> Unit,
-    department: SearchUsersDepartmentTab
+    onClick: (UsersDepartmentTab) -> Unit,
+    department: UsersDepartmentTab
 ) {
 
     Tab(

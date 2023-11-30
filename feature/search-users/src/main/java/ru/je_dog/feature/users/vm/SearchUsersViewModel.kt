@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,7 +15,9 @@ import ru.je_dog.core.common.ext.isSubstringFor
 import ru.je_dog.core.data.common.exception.FailedRequestException
 import ru.je_dog.core.feature.common.ext.sortByMonth
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
+import ru.je_dog.feature.users.filter.facade.SearchUserFilterFacade
+import ru.je_dog.feature.users.filter.facade.SearchUsersFilterFacadeImpl
+import ru.je_dog.feature.users.model.UsersDepartmentTab
 import ru.je_dog.feature.users.model.SearchUsersSortType
 import ru.je_dog.feature.users.vm.action.FilterByDepartmentsAction
 import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
@@ -36,9 +39,55 @@ class SearchUsersViewModel(
     private val _state = MutableStateFlow(SearchUsersViewState())
     val state: StateFlow<SearchUsersViewState> = _state
 
+    private val searchUsersFilter: SearchUserFilterFacade = SearchUsersFilterFacadeImpl()
+
     init {
 
+        initUsersFilter()
+
         loadUsers()
+
+    }
+
+    private fun initUsersFilter() = viewModelScope.launch {
+
+        with(searchUsersFilter){
+
+            launch {
+                filteredUsers.collect { filteredUsers ->
+                    Log.d("FilterTago","Update filtered list")
+                    Log.d("FilterTago",filteredUsers.toString())
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            filteredUsersList = filteredUsers
+                        )
+                    }
+
+                }
+            }
+            launch {
+                inputSearchFilter.collect { inputSearchFilter ->
+                    Log.d("FilterTago","Update filtered list")
+                    Log.d("FilterTago",inputSearchFilter)
+                    _state.update {
+                        it.copy(
+                            searchInputFilter = inputSearchFilter
+                        )
+                    }
+                }
+            }
+            launch {
+                departmentTabFilter.collect { departmentTab ->
+                    _state.update {
+                        it.copy(
+                            departmentFilter = departmentTab
+                        )
+                    }
+                }
+            }
+
+        }
 
     }
 
@@ -46,14 +95,16 @@ class SearchUsersViewModel(
         when (action) {
 
             is FilterByDepartmentsAction -> {
-                setDepartmentFilter(
-                    department = action.department
+                searchUsersFilter.updateDepartment(
+                    action.department,
+                    state.value.usersList
                 )
             }
 
             is FilterByInputSearchAction -> {
-                setInputSearchFilter(
-                    action.inputSearch
+                searchUsersFilter.updateInputSearch(
+                    action.inputSearch,
+                    state.value.usersList
                 )
             }
 
@@ -176,38 +227,6 @@ class SearchUsersViewModel(
 
     }
 
-    private fun setDepartmentFilter(
-        department: SearchUsersDepartmentTab
-    ) {
-
-        val filteredList = filterUsers(
-            department = department
-        )
-
-        _state.update {
-            it.copy(
-                departmentFilter = department,
-                filteredUsersList = filteredList
-            )
-        }
-    }
-
-    private fun setInputSearchFilter(
-        inputSearch: String?
-    ) {
-
-        val filteredList = filterUsers(
-            inputSearch = inputSearch
-        )
-
-        _state.update {
-            it.copy(
-                searchInputFilter = inputSearch,
-                filteredUsersList = filteredList
-            )
-        }
-    }
-
     private fun sortedListByAlphabetically(
         list: List<UserPresentation>
     ): List<UserPresentation> = list.sortedWith(
@@ -229,14 +248,11 @@ class SearchUsersViewModel(
                 val sortedUsers = sortedListByAlphabetically(
                     users
                 )
-                val filteredUsers = filterUsers(
-                    sortedUsers
-                )
+                searchUsersFilter.setList(sortedUsers)
 
                 _state.update {
                     it.copy(
                         usersList = sortedUsers,
-                        filteredUsersList = filteredUsers,
                         sortType = sortType
                     )
                 }
@@ -246,11 +262,10 @@ class SearchUsersViewModel(
             SearchUsersSortType.Birthday -> {
 
                 val sortedUsers = users.sortByMonth()
-                val filteredUsers = filterUsers(sortedUsers)
+                searchUsersFilter.setList(sortedUsers)
 
                 _state.update {
                     it.copy(
-                        filteredUsersList = filteredUsers,
                         usersList = sortedUsers,
                         sortType = sortType
                     )
@@ -275,14 +290,11 @@ class SearchUsersViewModel(
                 val sortedUsers = sortedListByAlphabetically(
                     users
                 )
-                val filteredUsers = filterUsers(
-                    sortedUsers
-                )
+                searchUsersFilter.setList(sortedUsers)
 
                 _state.update {
                     it.copy(
-                        usersList = sortedUsers,
-                        filteredUsersList = filteredUsers
+                        usersList = sortedUsers
                     )
                 }
 
@@ -291,11 +303,10 @@ class SearchUsersViewModel(
             SearchUsersSortType.Birthday -> {
 
                 val sortedUsers = users.sortByMonth()
-                val filteredUsers = filterUsers(sortedUsers)
+                searchUsersFilter.setList(sortedUsers)
 
                 _state.update {
                     it.copy(
-                        filteredUsersList = filteredUsers,
                         usersList = sortedUsers
                     )
                 }
@@ -304,69 +315,6 @@ class SearchUsersViewModel(
 
         }
 
-    }
-
-    private fun filterUsers(
-        users: List<UserPresentation> = state.value.usersList,
-        inputSearch: String? = state.value.searchInputFilter,
-        department: SearchUsersDepartmentTab = state.value.departmentFilter
-    ): List<UserPresentation> {
-
-        val stateValue = state.value
-        var filteredList = mutableListOf<UserPresentation>()
-
-        if (department == SearchUsersDepartmentTab.All && inputSearch == null)
-            return users
-
-        for (user in users){
-
-            if (department != SearchUsersDepartmentTab.All){
-
-                if (department.tag == user.department) {
-
-
-                    if (inputSearch != null) {
-                        if (
-                            inputSearch isSubstringFor user.firstname
-                            ||
-                            inputSearch isSubstringFor user.lastname
-                            ||
-                            inputSearch isSubstringFor user.userTag
-                        ) {
-                            filteredList.add(user)
-                        }
-
-                    } else {
-                        filteredList.add(user)
-                    }
-
-                }
-
-            }else {
-
-                if (inputSearch != null) {
-                    if (
-                        inputSearch isSubstringFor user.firstname
-                        ||
-                        inputSearch isSubstringFor user.lastname
-                        ||
-                        inputSearch isSubstringFor user.userTag
-                    ) {
-                        filteredList.add(user)
-                    }
-
-                }else {
-
-                    filteredList = stateValue.usersList.toMutableList()
-                    break
-
-                }
-
-            }
-
-        }
-
-        return filteredList
     }
 
 }

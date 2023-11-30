@@ -2,14 +2,12 @@ package ru.je_dog.feature.users.ui_elements.top_app_bar
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.je_dog.feature.users.model.SearchUsersDepartmentTab
+import ru.je_dog.feature.users.model.UsersDepartmentTab
 import ru.je_dog.feature.users.ui_elements.top_app_bar.input_field.InputField
 import ru.je_dog.feature.users.ui_elements.top_app_bar.tab_row.DepartmentsTabRow
 
@@ -21,8 +19,8 @@ fun TopAppBar(
     text: String,
     onCancelClick: () -> Unit,
     hasSorter: Boolean,
-    onTabClick: (SearchUsersDepartmentTab) -> Unit,
-    selectedTab: SearchUsersDepartmentTab
+    onTabClick: (UsersDepartmentTab) -> Unit,
+    selectedTab: UsersDepartmentTab
 ) {
 
     Column(

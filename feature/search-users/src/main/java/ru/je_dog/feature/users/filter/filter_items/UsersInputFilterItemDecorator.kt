@@ -1,11 +1,12 @@
 package ru.je_dog.feature.users.filter.filter_items
 
+import android.util.Log
 import ru.je_dog.core.common.ext.isSubstringFor
 import ru.je_dog.core.feature.common.list.filter.ListFilterItem
 import ru.je_dog.core.feature.model.UserPresentation
 
 class UsersInputFilterItemDecorator(
-    private val filterItem: ListFilterItem<*, UserPresentation>,
+    private val filterItem: ListFilterItem<*, UserPresentation>? = null,
     override var filterValue: String? = null
 ): ListFilterItem<String, UserPresentation> {
 
@@ -13,11 +14,17 @@ class UsersInputFilterItemDecorator(
 
         return if (filterValue != null){
 
-            return filterValue!! isSubstringFor item.firstname
-                    ||
-                    filterValue!! isSubstringFor item.lastname
-                    ||
-                    filterValue!! isSubstringFor item.userTag
+            if (
+                filterValue!! isSubstringFor item.firstname
+                ||
+                filterValue!! isSubstringFor item.lastname
+                ||
+                filterValue!! isSubstringFor item.userTag
+            ) {
+                filterItem?.execute(item) ?: true
+            }else {
+                false
+            }
 
         }else {
             true
