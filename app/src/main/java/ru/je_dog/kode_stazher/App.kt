@@ -17,6 +17,14 @@ class App: Application() {
 
     private fun init() {
         INSTANCE = this
+
+        startKoin {
+            androidContext(this@App)
+            androidLogger()
+            modules(
+                appModule
+            )
+        }
     }
 
     companion object {

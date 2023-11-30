@@ -29,8 +29,6 @@
     koin-bom = "3.5.1"
     coroutines = "1.7.3"
     pull_to_refresh = "0.2.0"
-appcompat = "1.6.1"
-material = "1.8.0"
 
 [libraries]
 
@@ -72,6 +70,7 @@ material = "1.8.0"
     koin-core = { module = "io.insert-koin:koin-core" }
     koin-android = { module = "io.insert-koin:koin-android" }
     koin-compose = { module = "io.insert-koin:koin-compose" }
+    koin-compose-androidx = { module = "io.insert-koin:koin-androidx-compose" }
 
 #Asynchrony
 
@@ -93,8 +92,6 @@ material = "1.8.0"
 
     android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
     kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 

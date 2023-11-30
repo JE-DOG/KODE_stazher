@@ -2,8 +2,6 @@ package ru.je_dog.feature.users.ui_elements.top_app_bar.input_field
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -27,8 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -38,12 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.common.ui.theme.Black
+import ru.je_dog.core.feature.common.ui.theme.DarkWhite
 import ru.je_dog.core.feature.common.ui.theme.LightGray
 import ru.je_dog.core.feature.common.ui.theme.Typography
-import ru.je_dog.feature.users.vm.action.SortByBirthdayAction
 
 @Composable
 fun InputField(
+    modifier: Modifier = Modifier,
     onTextChange: (String) -> Unit,
     text: String,
     hasSorter: Boolean,
@@ -65,7 +61,7 @@ fun InputField(
         LightGray
 
     BasicTextField(
-        modifier = Modifier
+        modifier = modifier
             .onFocusEvent {
                 hasFocus = it.hasFocus
             },
@@ -83,7 +79,7 @@ fun InputField(
                     .weight(1f)
                     .height(40.dp)
                     .background(
-                        Color(0xFFF7F7F8),
+                        DarkWhite,
                         RoundedCornerShape(16.dp)
                     )
                     .padding(horizontal = 12.dp, vertical = 8.dp),

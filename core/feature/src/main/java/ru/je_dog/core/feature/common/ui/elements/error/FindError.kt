@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.ui.theme.Typography
 
 @Composable
 fun FindError() {
@@ -34,11 +36,18 @@ fun FindError() {
         
         Spacer(modifier = Modifier.height(8.dp))
         
-        Text(text = "Мы никого не нашли")
+        Text(
+            text = "Мы никого не нашли",
+            style = Typography.bodyMedium,
+            fontWeight = FontWeight.Bold
+        )
         
         Spacer(modifier = Modifier.height(12.dp))
         
-        Text(text = "Попробуй скорректировать запрос")
+        Text(
+            text = "Попробуй скорректировать запрос",
+            style = Typography.bodySmall
+        )
 
     }
 

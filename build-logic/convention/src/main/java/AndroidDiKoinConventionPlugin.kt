@@ -23,6 +23,7 @@ class AndroidDiKoinConventionPlugin: Plugin<Project> {
 
                     implementation(findLibrary(koin_android))
                     implementation(findLibrary(koin_compose))
+                    implementation(findLibrary(koin_compose_androidx))
 
                 }
             }
