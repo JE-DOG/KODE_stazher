@@ -10,7 +10,7 @@ data class SearchUsersViewState(
     val isError: Boolean = false,
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
-    val sortType: ListSorterItem<UserPresentation> = AlphabeticallySortItem(),
+    val sortType: ListSorterItem<UserPresentation> = SearchUsersSortType.Alphabet.sorterItem,
     val searchInputFilter: String = "",
     val departmentFilter: UsersDepartmentTab = UsersDepartmentTab.All,
     val usersList: List<UserPresentation> = emptyList(),
