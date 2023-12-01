@@ -129,45 +129,41 @@ internal fun SearchUsersScreen(
                                 modifier = listModifier
                             ) {
 
+                                val filteredUsersList = state.filteredUsersList
+
                                 when (state.sortType) {
 
                                     is BirthdaySortItem -> {
 
-                                        val calendar = Calendar.getInstance()
+                                        val currentYearPoint = state.sortType.currentYearPoint
 
-                                        val nextYear = calendar.get(Calendar.YEAR) + 1
-                                        val currentMonth = calendar.get(Calendar.MONTH) + 1
-                                        val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+                                        items(filteredUsersList.size - currentYearPoint) { userIndex ->
 
-                                        val filteredUsersList = state.filteredUsersList
+                                            val user = filteredUsersList[userIndex + currentYearPoint]
 
-                                        val currentYearUsers = filteredUsersList.dropWhile {
-                                            it.birthday.month < currentMonth
-                                                    ||
-                                            it.birthday.month == currentMonth && it.birthday.day <= currentDayOfMonth
-                                        }
-
-                                        val nextYearUsers =
-                                            filteredUsersList.take(filteredUsersList.size - currentYearUsers.size)
-
-                                        items(currentYearUsers) {
                                             UserItem(
-                                                user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
+                                                user = user,
+                                                isSortByBirthday = state.sortType is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
 
                                         item {
 
+                                            val calendar = Calendar.getInstance()
+                                            val nextYear = calendar.get(Calendar.YEAR) + 1
+
                                             YearItem(year = nextYear.toString())
 
                                         }
 
-                                        items(nextYearUsers) {
+                                        items(currentYearPoint) { userIndex ->
+
+                                            val user = filteredUsersList[userIndex]
+
                                             UserItem(
-                                                user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
+                                                user = user,
+                                                isSortByBirthday = state.sortType is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
@@ -176,12 +172,10 @@ internal fun SearchUsersScreen(
 
                                     is AlphabeticallySortItem -> {
 
-                                        items(state.filteredUsersList) {
-                                            Log.d("SearchUsersScreenStateTagSorter",it.toString())
-
+                                        items(filteredUsersList) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType == SearchUsersSortType.Birthday.sorterItem,
+                                                isSortByBirthday = state.sortType is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
