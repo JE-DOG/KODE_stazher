@@ -10,12 +10,9 @@ import ru.je_dog.core.feature.model.UserPresentation
 
 class SearchUsersFilter(
     override var listItemFilter: ListFilterItem<*, UserPresentation>? = null
-): ListFilter<UserPresentation> {
+): ListFilter<UserPresentation>() {
 
-    private val _filteredList = MutableStateFlow(emptyList<UserPresentation>())
-    override val filteredList: StateFlow<List<UserPresentation>> = _filteredList
-
-    override fun setList(newList: List<UserPresentation>) {
+    override fun setList(newList: List<UserPresentation>): List<UserPresentation> {
         if (listItemFilter != null){
             val newFilteredList = mutableListOf<UserPresentation>()
 
@@ -27,14 +24,10 @@ class SearchUsersFilter(
 
             }
 
-            _filteredList.update {
-                newFilteredList
-            }
+            return newFilteredList
 
         }else {
-            _filteredList.update {
-                newList
-            }
+            return newList
         }
     }
 
