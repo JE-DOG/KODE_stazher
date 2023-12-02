@@ -1,7 +1,6 @@
 package ru.je_dog.feature.users
 
 import android.icu.util.Calendar
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.je_dog.core.feature.common.ui.elements.error.ErrorScreen
 import ru.je_dog.core.feature.common.ui.elements.error.FindError
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.list.sort.sort_items.AlphabeticallySortItem
-import ru.je_dog.feature.users.list.sort.sort_items.BirthdaySortItem
+import ru.je_dog.feature.users.list.sort_items.AlphabeticallySortItem
+import ru.je_dog.feature.users.list.sort_items.BirthdaySortItem
 import ru.je_dog.feature.users.ui_elements.top_app_bar.TopAppBar
 import ru.je_dog.feature.users.ui_elements.users_list.UserItem
 import ru.je_dog.feature.users.ui_elements.users_list.YearItem
@@ -64,7 +63,7 @@ internal fun SearchUsersScreen(
         sheetContent = {
 
             SearchUsersSort(
-                currentSortType = state.sortType,
+                currentSortType = state.sorterState.sorterItem,
                 onSortTypeClick = {
                     val action = SortByAction(it)
                     viewModel.action(action)
@@ -78,7 +77,7 @@ internal fun SearchUsersScreen(
             Modifier.fillMaxSize()
         ) {
 
-            AnimatedVisibility(!state.isLoading && !state.isError && state.usersList.isNotEmpty()) {
+            AnimatedVisibility(!state.isLoading && !state.isError && state.sorterState.list.isNotEmpty()) {
 
                 TopAppBar(
                     modifier = Modifier
@@ -93,14 +92,14 @@ internal fun SearchUsersScreen(
                         val action = FilterByInputSearchAction(it)
                         viewModel.action(action)
                     },
-                    text = state.searchInputFilter,
+                    text = state.filterState.inputSearch,
                     onCancelClick = { viewModel.action(FilterByInputSearchAction("")) },
                     onTabClick = {
                         val action = FilterByDepartmentsAction(it)
                         viewModel.action(action)
                     },
-                    selectedTab = state.departmentFilter,
-                    hasSorter = state.sortType != SearchUsersSortType.Alphabet.sorterItem
+                    selectedTab = state.filterState.departmentTab,
+                    hasSorter = state.sorterState.sorterItem != SearchUsersSortType.Alphabet.sorterItem
                 )
 
             }
@@ -123,19 +122,22 @@ internal fun SearchUsersScreen(
                         }
                     ) {
 
-                        if (state.filteredUsersList.isNotEmpty()) {
+                        val filteredUsersList = state.filterState.filteredList
+
+
+                        if (filteredUsersList.isNotEmpty()) {
 
                             LazyColumn(
                                 modifier = listModifier
                             ) {
 
-                                val filteredUsersList = state.filteredUsersList
+                                val sortItem = state.sorterState.sorterItem
 
-                                when (state.sortType) {
+                                when (sortItem) {
 
                                     is BirthdaySortItem -> {
 
-                                        val currentYearPoint = state.sortType.currentYearPoint
+                                        val currentYearPoint = sortItem.currentYearPoint
 
                                         items(filteredUsersList.size - currentYearPoint) { userIndex ->
 
@@ -143,7 +145,7 @@ internal fun SearchUsersScreen(
 
                                             UserItem(
                                                 user = user,
-                                                isSortByBirthday = state.sortType is BirthdaySortItem,
+                                                isSortByBirthday = sortItem is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
@@ -163,7 +165,7 @@ internal fun SearchUsersScreen(
 
                                             UserItem(
                                                 user = user,
-                                                isSortByBirthday = state.sortType is BirthdaySortItem,
+                                                isSortByBirthday = sortItem is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }
@@ -175,7 +177,7 @@ internal fun SearchUsersScreen(
                                         items(filteredUsersList) {
                                             UserItem(
                                                 user = it,
-                                                isSortByBirthday = state.sortType is BirthdaySortItem,
+                                                isSortByBirthday = sortItem is BirthdaySortItem,
                                                 onClick = navigateToUserProfile
                                             )
                                         }

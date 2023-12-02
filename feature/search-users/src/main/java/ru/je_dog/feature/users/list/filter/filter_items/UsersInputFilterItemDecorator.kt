@@ -7,19 +7,19 @@ import ru.je_dog.core.feature.model.UserPresentation
 
 class UsersInputFilterItemDecorator(
     private val filterItem: ListFilterItem<*, UserPresentation>? = null,
-    override var filterValue: String? = null
+    override var filterValue: String = ""
 ): ListFilterItem<String, UserPresentation> {
 
     override fun execute(item: UserPresentation): Boolean {
 
-        return if (filterValue != null){
+        return if (filterValue.isNotEmpty()){
 
             if (
-                filterValue!! isSubstringFor item.firstname
+                filterValue isSubstringFor item.firstname
                 ||
-                filterValue!! isSubstringFor item.lastname
+                filterValue isSubstringFor item.lastname
                 ||
-                filterValue!! isSubstringFor item.userTag
+                filterValue isSubstringFor item.userTag
             ) {
                 filterItem?.execute(item) ?: true
             }else {

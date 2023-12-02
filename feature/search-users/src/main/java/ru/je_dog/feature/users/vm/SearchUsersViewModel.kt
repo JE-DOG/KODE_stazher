@@ -11,11 +11,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.je_dog.core.data.common.exception.FailedRequestException
-import ru.je_dog.core.feature.common.list.sort.ListSorter
 import ru.je_dog.core.feature.model.UserPresentation
-import ru.je_dog.feature.users.list.filter.facade.SearchUserFilterFacade
-import ru.je_dog.feature.users.list.filter.facade.SearchUsersFilterFacadeImpl
-import ru.je_dog.feature.users.list.sort.UsersListSorter
+import ru.je_dog.feature.users.list.UsersListFacade
+import ru.je_dog.feature.users.list.UsersListFacadeImpl
+import ru.je_dog.feature.users.list.sort_items.BirthdaySortItem
 import ru.je_dog.feature.users.vm.action.FilterByDepartmentsAction
 import ru.je_dog.feature.users.vm.action.FilterByInputSearchAction
 import ru.je_dog.feature.users.vm.action.RefreshAction
@@ -35,87 +34,57 @@ class SearchUsersViewModel(
     private val _state = MutableStateFlow(SearchUsersViewState())
     val state: StateFlow<SearchUsersViewState> = _state
 
-    private val usersFilter: SearchUserFilterFacade = SearchUsersFilterFacadeImpl()
-    private val usersSorter: ListSorter<UserPresentation> = UsersListSorter(state.value.sortType)
+    private val usersListFacade: UsersListFacade = UsersListFacadeImpl()
 
     init {
 
-        initUsersFilter()
-        initUsersSorter()
+        initUsersListFacade()
 
         loadUsers()
 
     }
 
-    private fun initUsersSorter() = viewModelScope.launch {
-
-        usersSorter.listSorterState.collect { listSorterState ->
-
-            usersFilter.setList(listSorterState.list)
-
-            _state.update { currentState ->
-                currentState.copy(
-                    usersList = listSorterState.list,
-                    sortType = listSorterState.sorterItem
-                )
-            }
-        }
-
-    }
-
-    private fun initUsersFilter() = viewModelScope.launch {
-
-        with(usersFilter){
+    private fun initUsersListFacade() = viewModelScope.launch {
+        with(usersListFacade) {
 
             launch {
-                filteredUsers.collect { filteredUsers ->
+                filterState.collect { newFilterState ->
 
+                    val sortItem = state.value.sorterState.sorterItem
+                    if (sortItem is BirthdaySortItem){
+                        sortItem.setYearPoint(newFilterState.filteredList)
+                    }
 
                     _state.update { currentState ->
                         currentState.copy(
-                            filteredUsersList = filteredUsers
+                            filterState = newFilterState
                         )
                     }
                 }
             }
+
             launch {
-                inputSearchFilter.collect { inputSearchFilter ->
-                    _state.update {
-                        it.copy(
-                            searchInputFilter = inputSearchFilter
-                        )
-                    }
-                }
-            }
-            launch {
-                departmentTabFilter.collect { departmentTab ->
-                    _state.update {
-                        it.copy(
-                            departmentFilter = departmentTab
+                sorterState.collect { newSorterState ->
+                    _state.update { currentState ->
+                        currentState.copy(
+                            sorterState = newSorterState
                         )
                     }
                 }
             }
 
         }
-
     }
 
     fun action(action: SearchUsersAction) {
         when (action) {
 
             is FilterByDepartmentsAction -> {
-                usersFilter.updateDepartment(
-                    action.department,
-                    state.value.usersList
-                )
+                usersListFacade.updateDepartment(action.department)
             }
 
             is FilterByInputSearchAction -> {
-                usersFilter.updateInputSearch(
-                    action.inputSearch,
-                    state.value.usersList
-                )
+                usersListFacade.updateInputSearch(action.inputSearch)
             }
 
             is RefreshAction -> {
@@ -123,7 +92,7 @@ class SearchUsersViewModel(
             }
 
             is SortByAction -> {
-                usersSorter.updateSorterItem(action.sortType.sorterItem)
+                usersListFacade.updateSortItem(action.sortType.sorterItem)
             }
 
             is LoadUsersAction -> {
@@ -153,15 +122,13 @@ class SearchUsersViewModel(
                 .collect { usersDomain ->
                     val users = usersDomain
                         .map { UserPresentation.fromDomain(it) }
-
-                    usersSorter.setList(users)
+                    usersListFacade.setList(users)
 
                     _state.update {
                         it.copy(
                             isLoading = false
                         )
                     }
-
                 }
 
         }
@@ -194,8 +161,7 @@ class SearchUsersViewModel(
                 .collect { usersDomain ->
 
                     val newUsers = usersDomain.map { UserPresentation.fromDomain(it) }
-                    val updatedUsers = newUsers + state.value.usersList
-                    usersSorter.setList(updatedUsers)
+                    usersListFacade.addNewList(newUsers)
 
                     _state.update {
                         it.copy(

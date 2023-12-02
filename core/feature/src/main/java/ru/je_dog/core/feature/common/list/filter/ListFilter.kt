@@ -2,13 +2,12 @@ package ru.je_dog.core.feature.common.list.filter
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface ListFilter<T> {
+abstract class ListFilter<T> {
 
-    val filteredList: StateFlow<List<T>>
-    var listItemFilter: ListFilterItem<*, T>?
+    protected abstract var listItemFilter: ListFilterItem<*, T>?
 
-    fun setList(newList: List<T>)
+    abstract fun setList(newList: List<T>): List<T>
 
-    fun setListFilterItem(filterItem: ListFilterItem<*, T>?)
+    abstract fun setListFilterItem(filterItem: ListFilterItem<*, T>?)
 
 }

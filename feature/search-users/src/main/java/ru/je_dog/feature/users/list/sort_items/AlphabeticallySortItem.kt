@@ -1,4 +1,4 @@
-package ru.je_dog.feature.users.list.sort.sort_items
+package ru.je_dog.feature.users.list.sort_items
 
 import ru.je_dog.core.feature.common.list.sort.ListSorterItem
 import ru.je_dog.core.feature.model.UserPresentation

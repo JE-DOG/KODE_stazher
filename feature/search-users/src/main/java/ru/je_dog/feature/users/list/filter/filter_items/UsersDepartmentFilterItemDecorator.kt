@@ -7,7 +7,7 @@ import ru.je_dog.feature.users.model.UsersDepartmentTab
 
 class UsersDepartmentFilterItemDecorator(
     private val filterItem: ListFilterItem<*, UserPresentation>,
-    override var filterValue: UsersDepartmentTab? = UsersDepartmentTab.All
+    override var filterValue: UsersDepartmentTab = UsersDepartmentTab.All
 ): ListFilterItem<UsersDepartmentTab, UserPresentation> {
 
     override fun execute(item: UserPresentation): Boolean {
