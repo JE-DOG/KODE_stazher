@@ -9,29 +9,24 @@ import ru.je_dog.core.feature.common.list.filter.ListFilterItem
 import ru.je_dog.core.feature.model.UserPresentation
 
 class SearchUsersFilter(
-    override var listItemFilter: ListFilterItem<*, UserPresentation>? = null
+    override var listItemFilter: ListFilterItem<*, UserPresentation> = ListFilterItem.Empty()
 ): ListFilter<UserPresentation>() {
 
     override fun setList(newList: List<UserPresentation>): List<UserPresentation> {
-        if (listItemFilter != null){
-            val newFilteredList = mutableListOf<UserPresentation>()
+        val newFilteredList = mutableListOf<UserPresentation>()
 
-            newList.forEach { user ->
+        newList.forEach { user ->
 
-                if (listItemFilter!!.execute(user)){
-                    newFilteredList.add(user)
-                }
-
+            if (listItemFilter.execute(user)){
+                newFilteredList.add(user)
             }
 
-            return newFilteredList
-
-        }else {
-            return newList
         }
+
+        return newFilteredList
     }
 
-    override fun setListFilterItem(filterItem: ListFilterItem<*, UserPresentation>?) {
+    override fun setListFilterItem(filterItem: ListFilterItem<*, UserPresentation>) {
         listItemFilter = filterItem
     }
 

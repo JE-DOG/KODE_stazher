@@ -9,16 +9,18 @@ interface ListFilterItem<FV,T> {
     fun updateFilterValue(filterValue: FV)
 
     class Empty<T>(
-        expectOutput: Boolean = true
-    ): ListFilterItem<Any,T>{
+        var expectOutput: (T) -> Boolean = { true }
+    ): ListFilterItem<Boolean,T>{
 
-        override var filterValue: Any
+        override var filterValue: Boolean
             get() = TODO("Not yet implemented")
             set(value) {}
 
-        override fun execute(item: T) = true
+        override fun execute(item: T) = expectOutput(item)
 
-        override fun updateFilterValue(filterValue: Any) = Unit
+        override fun updateFilterValue(filterValue: Boolean){
+            expectOutput = { filterValue }
+        }
 
     }
 

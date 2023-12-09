@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 abstract class ListFilter<T> {
 
-    protected abstract var listItemFilter: ListFilterItem<*, T>?
+    protected abstract var listItemFilter: ListFilterItem<*, T>
 
     abstract fun setList(newList: List<T>): List<T>
 
-    abstract fun setListFilterItem(filterItem: ListFilterItem<*, T>?)
+    abstract fun setListFilterItem(filterItem: ListFilterItem<*, T>)
 
 }
