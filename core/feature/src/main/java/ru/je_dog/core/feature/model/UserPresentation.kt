@@ -30,6 +30,26 @@ data class UserPresentation(
 
     companion object {
 
+        fun testInstance(
+            id: String = "",
+            firstname: String = "",
+            lastname: String = "",
+            userTag: String = "",
+            department: String = "",
+            position: String = "",
+            birthday: Date = Date.create("0000-00-00"),
+            phone: String = ""
+        ) = UserPresentation(
+            id = id,
+            firstname = firstname,
+            lastname = lastname,
+            userTag = userTag,
+            department = department,
+            position = position,
+            birthday = birthday,
+            phone = phone
+        )
+
         fun fromDomain(
             userDomain: UserDomain
         ): UserPresentation = userDomain.run {

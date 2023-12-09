@@ -6,7 +6,7 @@ import ru.je_dog.core.feature.common.list.filter.ListFilterItem
 import ru.je_dog.core.feature.model.UserPresentation
 
 class UsersInputFilterItemDecorator(
-    private val filterItem: ListFilterItem<*, UserPresentation>? = null,
+    private val filterItem: ListFilterItem<*, UserPresentation> = ListFilterItem.Empty(),
     override var filterValue: String = ""
 ): ListFilterItem<String, UserPresentation> {
 

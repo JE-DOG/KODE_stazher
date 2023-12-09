@@ -8,4 +8,18 @@ interface ListFilterItem<FV,T> {
 
     fun updateFilterValue(filterValue: FV)
 
+    class Empty<T>(
+        expectOutput: Boolean = true
+    ): ListFilterItem<Any,T>{
+
+        override var filterValue: Any
+            get() = TODO("Not yet implemented")
+            set(value) {}
+
+        override fun execute(item: T) = true
+
+        override fun updateFilterValue(filterValue: Any) = Unit
+
+    }
+
 }
