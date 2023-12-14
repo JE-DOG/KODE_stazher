@@ -49,12 +49,6 @@ class SearchUsersViewModel(
 
             launch {
                 filterState.collect { newFilterState ->
-
-                    val sortItem = state.value.sorterState.sorterItem
-                    if (sortItem is BirthdaySortItem){
-                        sortItem.setYearPoint(newFilterState.filteredList)
-                    }
-
                     _state.update { currentState ->
                         currentState.copy(
                             filterState = newFilterState

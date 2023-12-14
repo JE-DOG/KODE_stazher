@@ -12,7 +12,9 @@ enum class SearchUsersSortType(
 
     Birthday(
         "По дню рождения",
-        BirthdaySortItem()
+        BirthdaySortItem {
+            it.birthday
+        }
     ),
     Alphabet(
         "По алфавиту",

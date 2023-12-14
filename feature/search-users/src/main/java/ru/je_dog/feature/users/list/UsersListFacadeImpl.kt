@@ -81,6 +81,11 @@ class UsersListFacadeImpl: UsersListFacade {
     private fun updateFilteredList(sortedList: List<UserPresentation>){
 
         val newFilteredList = searchUsersFilter.setList(sortedList)
+        val sortItem = sorterState.value.sorterItem
+
+        if (sortItem is BirthdaySortItem){
+            sortItem.updateCurrentYearPoint(newFilteredList)
+        }
 
         _filterState.update { filterState ->
             filterState.copy(
